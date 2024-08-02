@@ -1,6 +1,7 @@
 #include "mainwin.h"
 #include "ui_mainwin.h"
 
+
 MainWin::MainWin(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWin)
@@ -28,6 +29,7 @@ void MainWin::Connections()
 
     connect(ui->cameraOpen, &QPushButton::clicked, camera, &CameraSet::CamaraOpen);
     connect(ui->cameraClose, &QPushButton::clicked, camera, &CameraSet::CameraClose);
+    connect(ui->ScreenShot, &QPushButton::clicked, camera, &CameraSet::Screenshot);
 
 }
 

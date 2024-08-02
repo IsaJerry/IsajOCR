@@ -14,11 +14,13 @@ public:
     void SetCamera();
     void CamaraOpen();
     void CameraClose();
+    void Screenshot();
 
 private:
     QVideoWidget *CameraDisp;
     QComboBox *cameraBox;
     QMediaCaptureSession capture;
+    QImageCapture *imgCapture;
     QPushButton *ScreenShot;
 
     QStringList GetVideoDeviceList();

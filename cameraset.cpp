@@ -31,6 +31,15 @@ void CameraSet::CameraClose()
     ScreenShot->setEnabled(false);
 }
 
+void CameraSet::Screenshot()
+{
+    imgCapture->capture();
+    connect(imgCapture, &QImageCapture::imageCaptured, this, [=](int id, const QImage &preview){
+        QPixmap a;
+        a.convertFromImage(preview);
+    });
+}
+
 void CameraSet::SetCamera()
 {
     for(QCameraDevice &cameraDevice : cameras)
@@ -41,6 +50,9 @@ void CameraSet::SetCamera()
         }
     }
     capture.setCamera(Camera);
+    imgCapture = new QImageCapture();
+    imgCapture->setParent(Camera);
+    capture.setImageCapture(imgCapture);
     capture.setVideoOutput(CameraDisp);
 }
 

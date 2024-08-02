@@ -16,9 +16,11 @@
 #include <QComboBox>
 #include <QCamera>
 #include <QMediaCaptureSession>
+#include <QImageCapture>
 #include <QCoreApplication>
 #include <QSettings>
 #include <QPushButton>
+#include <QPixmap>
 
 
 #endif // INCLUDER_H
