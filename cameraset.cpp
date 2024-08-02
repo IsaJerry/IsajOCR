@@ -5,17 +5,20 @@ CameraSet::CameraSet()
 
 }
 
-CameraSet::CameraSet(QVideoWidget *cameraDisp, QComboBox *box)
+CameraSet::CameraSet(QVideoWidget *cameraDisp, QComboBox *box, QPushButton *srceenshot)
 {
     this->CameraDisp = cameraDisp;
     this->cameraBox = box;
+    this->ScreenShot = srceenshot;
     CameraSelect();
 }
 
 void CameraSet::CamaraOpen()
 {
+    CameraDisp->setVisible(true);
     SetCamera();
     Camera->start();
+    ScreenShot->setEnabled(true);
 }
 
 void CameraSet::CameraClose()
@@ -24,6 +27,8 @@ void CameraSet::CameraClose()
     {
         Camera->stop();
     }
+    CameraDisp->setVisible(false);
+    ScreenShot->setEnabled(false);
 }
 
 void CameraSet::SetCamera()

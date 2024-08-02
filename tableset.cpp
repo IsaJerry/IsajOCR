@@ -5,16 +5,31 @@ TableSet::TableSet()
 
 }
 
-TableSet::TableSet(QTableWidget *table, QWidget *parent, QLineEdit *searchLine)
+TableSet::TableSet(QTableWidget *table, QWidget *parent, QLineEdit *searchLine, QAction *defaultSave, QAction *save)
 {
-    this->Table = table;
-    this->SearchLine = searchLine;
+    Table = table;
+    SearchLine = searchLine;
+    DefaultOp = defaultSave;
+    Save = save;
     file = new FileOp(parent);
+    DefaultLoad();
 }
 
 void TableSet::DefaultLoad()
 {
-
+    if((new ISAJData())->ReadData("DefaultLoad") == "true")
+    {
+        DefaultOp->setChecked(true);
+        file->ReadFromPath((new ISAJData())->ReadData("filePath"));
+        if(file->isPath())
+        {
+            SetTable();
+        }
+    }
+    else
+    {
+        DefaultOp->setChecked(false);
+    }
 }
 
 void TableSet::SetTable()
@@ -34,7 +49,21 @@ void TableSet::SetTable()
             }
         }
         SetSearch();
+        Save->setEnabled(true);
     }
+}
+
+void TableSet::SetDefault(bool checked)
+{
+    if(checked)
+    {
+        (new ISAJData())->SaveData("DefaultLoad", "true");
+    }
+    else
+    {
+        (new ISAJData())->SaveData("DefaultLoad", "false");
+    }
+
 }
 
 void TableSet::SaveTable()
@@ -48,6 +77,23 @@ QStringList TableSet::GetTableLineData(QString linedata)
     return tabletata = linedata.split("\t");
 }
 
+void TableSet::AddRecode()
+{
+    QString title = file->OpenDialog(file->Text);
+    Table->setColumnCount(Table->columnCount()+1);
+    Table->setItem(0, Table->columnCount()-1, new QTableWidgetItem(title));
+}
+
+void TableSet::AddRow()
+{
+    Table->setRowCount(Table->rowCount()+1);
+}
+
+void TableSet::AddColumn()
+{
+    Table->setColumnCount(Table->columnCount()+1);
+}
+
 void TableSet::SetSearch()
 {
     SearchTips = new QCompleter(SearchTipList, SearchLine);
@@ -58,7 +104,10 @@ void TableSet::SetSearch()
 
 void TableSet::SearchDisplay()
 {
-    QList<QTableWidgetItem *> searchlist = Table->findItems(SearchLine->text(), Qt::MatchContains);
-    Table->scrollToItem(searchlist.at(0), QAbstractItemView::PositionAtCenter);
-    Table->item(searchlist.at(0)->row(), searchlist.at(0)->column())->setSelected(true);
+    if(SearchLine->text() != "")
+    {
+        QList<QTableWidgetItem *> searchlist = Table->findItems(SearchLine->text(), Qt::MatchContains);
+        Table->scrollToItem(searchlist.at(0), QAbstractItemView::PositionAtCenter);
+        Table->item(searchlist.at(0)->row(), searchlist.at(0)->column())->setSelected(true);
+    }
 }

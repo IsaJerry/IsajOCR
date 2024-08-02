@@ -10,35 +10,43 @@ FileOp::FileOp(QWidget *parent)
     this->parent = parent;
 }
 
-QString FileOp::OpenFileDialog(QString model)
+QString FileOp::OpenDialog(enum DialogModel model)
 {
-    if(model == "Open")
-    {
+    switch (model) {
+    case Open:
         if(parent != nullptr)
         {
             return QFileDialog::getOpenFileName(parent, "打开文件", "", "*.txt");
         }
-        return QFileDialog::getOpenFileName(NULL, "打开文件", "", ".txt");
-    }
-    else if(model == "Save")
-    {
+        return QFileDialog::getOpenFileName(NULL, "打开文件", "", "*.txt");
+        break;
+    case Save:
         if(parent != nullptr)
         {
-            return QFileDialog::getSaveFileName(parent, "保存文件", "", ".txt");
+            return QFileDialog::getSaveFileName(parent, "保存文件", "", "*.txt");
         }
-        return QFileDialog::getSaveFileName(NULL, "保存文件", "", ".txt");
-    }
-    else
-    {
-        QMessageBox::warning(NULL, "警告", "OpenFileDialog的model只能是Open和Save");
+        return QFileDialog::getSaveFileName(NULL, "保存文件", "", "*.txt");
+        break;
+    case Text:
+        if(parent != nullptr)
+        {
+            return QInputDialog::getText(parent, "添加一次记录", "输入标题：", QLineEdit::Normal);
+        }
+        return QInputDialog::getText(NULL, "添加一次记录", "输入标题：", QLineEdit::Normal);
+        break;
+    default:
         return "";
+        break;
     }
 }
 
 QStringList FileOp::ReadFile()
 {
     QStringList fileData;
-    Path = OpenFileDialog("Open");
+    if(!ishasPath)
+    {
+        Path = OpenDialog(DialogModel::Open);
+    }
     if(Path != "")
     {
         QFile File(Path);
@@ -67,7 +75,11 @@ QStringList FileOp::ReadFile()
 
 void FileOp::WriteTable(QTableWidget *table)
 {
-    Path = OpenFileDialog("Save");
+    if((new ISAJData())->ReadData("DefaultLoad") == "true")
+    {
+        SavePath(Path);
+    }
+    Path = OpenDialog(DialogModel::Save);
     if(Path != "")
     {
         QFile File(Path);
@@ -112,4 +124,18 @@ void FileOp::SavePath(QString path)
 {
     ISAJData *data = new ISAJData();
     data->SaveData("filePath", path);
+}
+
+void FileOp::ReadFromPath(QString path)
+{
+    if(path != "null")
+    {
+        Path = path;
+        ishasPath = true;
+    }
+}
+
+bool FileOp::isPath()
+{
+    return ishasPath;
 }

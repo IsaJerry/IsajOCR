@@ -2,7 +2,13 @@
 
 ISAJData::ISAJData()
 {
+    GetSettingFile();
+}
 
+ISAJData::~ISAJData()
+{
+    //ISAJSetting->sync();
+    delete ISAJSetting;
 }
 
 void ISAJData::GetSettingFile()
@@ -14,8 +20,8 @@ void ISAJData::GetSettingFile()
         file.open(QIODevice::WriteOnly);
         file.close();
     }
-    QSettings isaj(path, QSettings::IniFormat);
-    ISAJSetting = &isaj;
+    ISAJSetting = new QSettings(path, QSettings::IniFormat);
+
 }
 
 void ISAJData::SaveData(QString id, QString value)

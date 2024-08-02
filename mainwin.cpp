@@ -6,8 +6,8 @@ MainWin::MainWin(QWidget *parent)
     , ui(new Ui::MainWin)
 {
     ui->setupUi(this);
-    camera = new CameraSet(ui->cameraDisp, ui->cameralistBox);
-    table = new TableSet(ui->table, this, ui->searchLine);
+    camera = new CameraSet(ui->cameraDisp, ui->cameralistBox, ui->ScreenShot);
+    table = new TableSet(ui->table, this, ui->searchLine, ui->actionDefaultOpen, ui->actionSave);
     Connections();
 }
 
@@ -16,61 +16,18 @@ MainWin::~MainWin()
     delete ui;
 }
 
-void MainWin::TableSetting()
-{
-    table->SetTable();
-    ui->actionSave->setEnabled(true);
-}
-
-void MainWin::SimpleSearch()
-{
-    table->SearchDisplay();
-}
-
-void MainWin::SaveData()
-{
-    table->SaveTable();
-}
-
-void MainWin::AddRecode()
-{
-    QString title = QInputDialog::getText(this, "添加一次记录", "输入标题：", QLineEdit::Normal);
-    ui->table->setColumnCount(ui->table->columnCount()+1);
-    ui->table->setItem(0, ui->table->columnCount()-1, new QTableWidgetItem(title));
-}
-
-void MainWin::AddRow()
-{
-    ui->table->setRowCount(ui->table->rowCount()+1);
-}
-
-void MainWin::AddColumn()
-{
-    ui->table->setColumnCount(ui->table->columnCount()+1);
-}
-
-void MainWin::CameraOpen()
-{
-    ui->cameraDisp->setVisible(true);
-    camera->CamaraOpen();
-}
-
-void MainWin::CameraClose()
-{
-    camera->CameraClose();
-    ui->cameraDisp->setVisible(false);
-}
-
 void MainWin::Connections()
 {
-    connect(ui->actionOpen, &QAction::triggered, this, &MainWin::TableSetting);
-    connect(ui->actionSave, &QAction::triggered, this, &MainWin::SaveData);
-    connect(ui->actionRecode, &QAction::triggered, this, &MainWin::AddRecode);
-    connect(ui->actionRow, &QAction::triggered, this, &MainWin::AddRow);
-    connect(ui->actionColumn, &QAction::triggered, this, &MainWin::AddColumn);
+    connect(ui->actionOpen, &QAction::triggered, table, &TableSet::SetTable);
+    connect(ui->actionSave, &QAction::triggered, table, &TableSet::SaveTable);
+    connect(ui->actionRecode, &QAction::triggered, table, &TableSet::AddRecode);
+    connect(ui->actionRow, &QAction::triggered, table, &TableSet::AddRow);
+    connect(ui->actionColumn, &QAction::triggered, table, &TableSet::AddColumn);
+    connect(ui->searchBtn, &QPushButton::clicked, table, &TableSet::SearchDisplay);
+    connect(ui->actionDefaultOpen, &QAction::triggered, table, &TableSet::SetDefault);
 
-    connect(ui->searchBtn, &QPushButton::clicked, this, &MainWin::SimpleSearch);
-    connect(ui->cameraOpen, &QPushButton::clicked, this, &MainWin::CameraOpen);
-    connect(ui->cameraClose, &QPushButton::clicked, this, &MainWin::CameraClose);
+    connect(ui->cameraOpen, &QPushButton::clicked, camera, &CameraSet::CamaraOpen);
+    connect(ui->cameraClose, &QPushButton::clicked, camera, &CameraSet::CameraClose);
+
 }
 

@@ -3,14 +3,14 @@
 
 #include <Includer.h>
 
-class CameraSet
+class CameraSet : public QMainWindow
 {
 public:
     QList<QCameraDevice> cameras;
     QCamera *Camera;
 
     CameraSet();
-    CameraSet(QVideoWidget * cameraDisp, QComboBox *box);
+    CameraSet(QVideoWidget * cameraDisp, QComboBox *box, QPushButton *srceenshot);
     void SetCamera();
     void CamaraOpen();
     void CameraClose();
@@ -19,6 +19,7 @@ private:
     QVideoWidget *CameraDisp;
     QComboBox *cameraBox;
     QMediaCaptureSession capture;
+    QPushButton *ScreenShot;
 
     QStringList GetVideoDeviceList();
     void CameraSelect();

@@ -1,6 +1,7 @@
 #ifndef INCLUDER_H
 #define INCLUDER_H
 
+#include "qmainwindow.h"
 #include <QTableWidget>
 #include <QFile>
 #include <QFileDialog>
@@ -17,6 +18,7 @@
 #include <QMediaCaptureSession>
 #include <QCoreApplication>
 #include <QSettings>
+#include <QPushButton>
 
 
 #endif // INCLUDER_H
