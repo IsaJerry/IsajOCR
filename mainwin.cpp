@@ -1,4 +1,5 @@
 #include "mainwin.h"
+#include "ocrsystem.h"
 #include "ui_mainwin.h"
 
 
@@ -9,6 +10,8 @@ MainWin::MainWin(QWidget *parent)
     ui->setupUi(this);
     camera = new CameraSet(ui->cameraDisp, ui->cameralistBox, ui->ScreenShot);
     table = new TableSet(ui->table, this, ui->searchLine, ui->actionDefaultOpen, ui->actionSave);
+    OCRSystem *a = new OCRSystem();
+    a->getAccessToken("7FnzsV8k8kPorw6ZU6WLDu3i", "PXD7sXvDMx3H0YRoJODg3XPo03w4q1rB");
     Connections();
 }
 

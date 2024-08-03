@@ -11,9 +11,11 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    baiduocr.cpp \
     cameraset.cpp \
     fileop.cpp \
     isajdata.cpp \
+    jsoncpp/jsoncpp.cpp \
     main.cpp \
     mainwin.cpp \
     ocrsystem.cpp \
@@ -22,14 +24,32 @@ SOURCES += \
 HEADERS += \
     IncludeItems.h \
     Includer.h \
+    aip-cpp-sdk-4.16.7/body_analysis.h \
+    aip-cpp-sdk-4.16.7/content_censor.h \
+    aip-cpp-sdk-4.16.7/face.h \
+    aip-cpp-sdk-4.16.7/image_censor.h \
+    aip-cpp-sdk-4.16.7/image_classify.h \
+    aip-cpp-sdk-4.16.7/image_process.h \
+    aip-cpp-sdk-4.16.7/image_search.h \
+    aip-cpp-sdk-4.16.7/kg.h \
+    aip-cpp-sdk-4.16.7/machine_translation.h \
+    aip-cpp-sdk-4.16.7/nlp.h \
+    aip-cpp-sdk-4.16.7/ocr.h \
+    aip-cpp-sdk-4.16.7/speech.h \
+    aip-cpp-sdk-4.16.7/video_censor.h \
+    aip-cpp-sdk-4.16.7/voice_censor.h \
+    baiduocr.h \
     cameraset.h \
     fileop.h \
     isajdata.h \
+    jsoncpp/json/json-forwards.h \
+    jsoncpp/json/json.h \
     mainwin.h \
     ocrsystem.h \
     tableset.h
 
 FORMS += \
+    baiduocr.ui \
     mainwin.ui
 
 # Default rules for deployment.
@@ -37,13 +57,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../python/libs/ -lpython312
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../python/libs/ -lpython312d
+win32: LIBS += -L$$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/lib/ -llibcurl_debug
 
-INCLUDEPATH += $$PWD/../../../python/include
-DEPENDPATH += $$PWD/../../../python/include
-
-#win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../python/libs/libpython312.a
-#else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../python/libs/libpython312d.a
-#else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../python/libs/python312.lib
-#else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../python/libs/python312d.lib
+INCLUDEPATH += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/include
+DEPENDPATH += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/include

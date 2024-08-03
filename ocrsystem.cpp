@@ -2,28 +2,58 @@
 
 OCRSystem::OCRSystem()
 {
+
 }
 
-void OCRSystem::GetAcessToken(std::string id, std::string key)
+void OCRSystem::getAccessToken(QString apiKey, QString secretKey)
 {
-    Py_SetPythonHome(L"D:/python");
-    Py_Initialize();
-        PyRun_SimpleString("import sys");
-        PyRun_SimpleString("sys.path.append('./')");
-        PyObject *Model = PyImport_ImportModule("get");
-        PyObject *GetToken = PyObject_GetAttrString(Model, "getAcessToken");
-        //PyObject *args = PyTuple_New(2);
-        //PyObject *args = Py_BuildValue("(ss)", id.c_str(), key.c_str());
-        //PyTuple_SetItem(args, 0, Py_BuildValue("s", id.c_str());
-        //PyTuple_SetItem(args, 1, Py_BuildValue("s", key.c_str());
-        PyObject *ret = PyObject_CallObject(GetToken, NULL);
-        std::string e;
-        PyArg_Parse(ret, "s", &e);
-        qDebug()<<e;
-    Py_Finalize();
+    CURL *curl;
+    curl = curl_easy_init();
+    if(curl)
+    {
+        std::string url = AccessTokenUrl.toStdString() + "&client_id=" + apiKey.toStdString() + "&client_secret=" + secretKey.toStdString();
+        curl_easy_setopt(curl, CURLOPT_URL, url.data());
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+        QString reslut;
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &reslut);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, SaveAccessToken);
+        CURLcode result_code = curl_easy_perform(curl);
+        if (result_code != CURLE_OK)
+        {
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result_code));
+        }
+        curl_easy_cleanup(curl);
+        SetAccessTokenTime();
+    }
 }
 
-void OCRSystem::PythonFinalInit()
+void OCRSystem::SetAccessTokenTime()
 {
+    QDateTime time = QDateTime::currentDateTime();
+    (new ISAJData())->SaveData("GetTokenTime", time.toString("yyyy-MM-dd hh:mm:ss"));
+}
 
+int OCRSystem::GetLastTime()
+{
+    QString time = (new ISAJData())->ReadData("GetTokenTime");
+    if(time == "null")
+    {
+        return 0;
+    }
+    QDateTime nowTime = QDateTime::currentDateTime();
+    QDateTime setTime = QDateTime::fromString(time, "yyyy-MM-dd hh:mm:ss");
+    return setTime.daysTo(nowTime);
+}
+
+size_t OCRSystem::SaveAccessToken(void *ptr, size_t size, size_t nmemb, void *stream)
+{
+    std::string s((char *) ptr, size * nmemb);
+    Json::Reader reader;
+    Json::Value root;
+    reader.parse(s,root);
+    std::string rest = root["access_token"].asString();
+    (new ISAJData())->SaveData("Accesstoken", QString::fromStdString(rest));
+    //qDebug() << root["access_token"].asString();
+    return nmemb;
 }
