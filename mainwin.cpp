@@ -1,7 +1,6 @@
 #include "mainwin.h"
-#include "ocrsystem.h"
 #include "ui_mainwin.h"
-
+#include <QSslSocket>
 
 MainWin::MainWin(QWidget *parent)
     : QMainWindow(parent)
@@ -10,8 +9,8 @@ MainWin::MainWin(QWidget *parent)
     ui->setupUi(this);
     camera = new CameraSet(ui->cameraDisp, ui->cameralistBox, ui->ScreenShot);
     table = new TableSet(ui->table, this, ui->searchLine, ui->actionDefaultOpen, ui->actionSave);
-    OCRSystem *a = new OCRSystem();
-    a->getAccessToken("7FnzsV8k8kPorw6ZU6WLDu3i", "PXD7sXvDMx3H0YRoJODg3XPo03w4q1rB");
+    baidu = new BaiduOCR();
+    qDebug()<<QSslSocket::sslLibraryBuildVersionString();
     Connections();
 }
 
@@ -27,6 +26,8 @@ void MainWin::Connections()
     connect(ui->actionRecode, &QAction::triggered, table, &TableSet::AddRecode);
     connect(ui->actionRow, &QAction::triggered, table, &TableSet::AddRow);
     connect(ui->actionColumn, &QAction::triggered, table, &TableSet::AddColumn);
+    connect(ui->actionSetting, &QAction::triggered, baidu, &BaiduOCR::OpenWidget);
+
     connect(ui->searchBtn, &QPushButton::clicked, table, &TableSet::SearchDisplay);
     connect(ui->actionDefaultOpen, &QAction::triggered, table, &TableSet::SetDefault);
 

@@ -235,8 +235,21 @@ selection-color: rgb(0, 0, 0);</string>
     </widget>
     <addaction name="menu"/>
    </widget>
+   <widget class="QMenu" name="OCR">
+    <property name="title">
+     <string>OCR</string>
+    </property>
+    <widget class="QMenu" name="menuBaidu">
+     <property name="title">
+      <string>Baidu</string>
+     </property>
+     <addaction name="actionSetting"/>
+    </widget>
+    <addaction name="menuBaidu"/>
+   </widget>
    <addaction name="File"/>
    <addaction name="Edit"/>
+   <addaction name="OCR"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
@@ -282,6 +295,11 @@ selection-color: rgb(0, 0, 0);</string>
    </property>
    <property name="text">
     <string>默认打开上次保存的文件</string>
+   </property>
+  </action>
+  <action name="actionSetting">
+   <property name="text">
+    <string>设置</string>
    </property>
   </action>
  </widget>

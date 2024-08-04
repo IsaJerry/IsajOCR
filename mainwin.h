@@ -21,6 +21,7 @@ private:
     Ui::MainWin *ui;
     TableSet *table;
     CameraSet *camera;
+    BaiduOCR *baidu;
 
 };
 #endif // MAINWIN_H

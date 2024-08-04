@@ -15,7 +15,7 @@ SOURCES += \
     cameraset.cpp \
     fileop.cpp \
     isajdata.cpp \
-    jsoncpp/jsoncpp.cpp \
+    jsoncpp.cpp \
     main.cpp \
     mainwin.cpp \
     ocrsystem.cpp \
@@ -24,6 +24,10 @@ SOURCES += \
 HEADERS += \
     IncludeItems.h \
     Includer.h \
+    aip-cpp-sdk-4.16.7/base/base.h \
+    aip-cpp-sdk-4.16.7/base/base64.h \
+    aip-cpp-sdk-4.16.7/base/http.h \
+    aip-cpp-sdk-4.16.7/base/utils.h \
     aip-cpp-sdk-4.16.7/body_analysis.h \
     aip-cpp-sdk-4.16.7/content_censor.h \
     aip-cpp-sdk-4.16.7/face.h \
@@ -42,8 +46,8 @@ HEADERS += \
     cameraset.h \
     fileop.h \
     isajdata.h \
-    jsoncpp/json/json-forwards.h \
-    jsoncpp/json/json.h \
+    json/json-forwards.h \
+    json/json.h \
     mainwin.h \
     ocrsystem.h \
     tableset.h

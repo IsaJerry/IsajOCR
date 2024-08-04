@@ -20,7 +20,7 @@
 #include <sstream>
 #include <string>
 #include <map>
-#include <json/json.h>
+#include <jsoncpp/json/json.h>
 
 namespace aip {
     

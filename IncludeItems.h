@@ -4,6 +4,7 @@
 #include "tableset.h"
 #include "cameraset.h"
 #include "isajdata.h"
+#include "baiduocr.h"
 
 #include <Includer.h>
 

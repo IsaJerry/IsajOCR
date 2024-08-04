@@ -5,7 +5,7 @@ OCRSystem::OCRSystem()
 
 }
 
-void OCRSystem::getAccessToken(QString apiKey, QString secretKey)
+QString OCRSystem::getAccessToken(QString apiKey, QString secretKey)
 {
     CURL *curl;
     curl = curl_easy_init();
@@ -21,10 +21,27 @@ void OCRSystem::getAccessToken(QString apiKey, QString secretKey)
         CURLcode result_code = curl_easy_perform(curl);
         if (result_code != CURLE_OK)
         {
-            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result_code));
+            QString a = curl_easy_strerror(result_code);
+            QString b = "curl_easy_perform() failed: \n" + a;
+            //fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result_code));
+            curl_easy_cleanup(curl);
+            return b;
         }
         curl_easy_cleanup(curl);
+        AccessToken = (new ISAJData())->ReadData("Accesstoken");
+        if(AccessToken == "")
+        {
+            return "Get AccessToken ERROR";
+        }
         SetAccessTokenTime();
+        ISAJData *save = new ISAJData();
+        save->SaveData("API Key", apiKey);
+        save->SaveData("Secret Key", secretKey);
+        return "success";
+    }
+    else
+    {
+        return "Get AccessToken ERROR";
     }
 }
 
@@ -43,7 +60,7 @@ int OCRSystem::GetLastTime()
     }
     QDateTime nowTime = QDateTime::currentDateTime();
     QDateTime setTime = QDateTime::fromString(time, "yyyy-MM-dd hh:mm:ss");
-    return setTime.daysTo(nowTime);
+    return 30 - setTime.daysTo(nowTime);
 }
 
 size_t OCRSystem::SaveAccessToken(void *ptr, size_t size, size_t nmemb, void *stream)
