@@ -139,3 +139,12 @@ bool FileOp::isPath()
 {
     return ishasPath;
 }
+
+QString FileOp::Image2Base64(QImage image)
+{
+    QByteArray data;
+    QBuffer buffer(&data);
+    buffer.open(QIODevice::WriteOnly);
+    image.save(&buffer, "PNG");
+    return data.toBase64();
+}

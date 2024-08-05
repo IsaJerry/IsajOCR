@@ -1,22 +1,28 @@
 #include "mainwin.h"
 #include "ui_mainwin.h"
-#include <QSslSocket>
 
 MainWin::MainWin(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWin)
 {
     ui->setupUi(this);
-    camera = new CameraSet(ui->cameraDisp, ui->cameralistBox, ui->ScreenShot);
+    camera = new CameraSet(ui->cameraDisp, ui->cameralistBox, ui->ScreenShot, this);
     table = new TableSet(ui->table, this, ui->searchLine, ui->actionDefaultOpen, ui->actionSave);
     baidu = new BaiduOCR();
-    qDebug()<<QSslSocket::sslLibraryBuildVersionString();
+    baidu->GetParent(this);
+    camera->SetOcr(baidu->GetOcr());
+    SetWidget();
     Connections();
 }
 
 MainWin::~MainWin()
 {
     delete ui;
+}
+
+void MainWin::SetWidget()
+{
+    ui->cameraWidget->resize(250, 380);
 }
 
 void MainWin::Connections()

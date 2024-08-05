@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>330</width>
-    <height>210</height>
+    <height>227</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,39 +20,30 @@
       <item>
        <widget class="QWidget" name="EidtWidget" native="true">
         <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="apiKeyLine"/>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>0次</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="LastCount">
+           <property name="text">
+            <string>剩余次数：</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="API_Key">
            <property name="text">
             <string>API Key：</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="SecretKeyLine"/>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="token">
-           <property name="text">
-            <string>AccessToken：</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="apiKeyLine"/>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="TokenLine"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="SecretKey">
-           <property name="text">
-            <string>Secret Key：</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -69,12 +60,38 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="SecretKey">
+           <property name="text">
+            <string>Secret Key：</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="TokenLine"/>
+         </item>
          <item row="3" column="1">
           <widget class="QLabel" name="label">
            <property name="text">
             <string>0天</string>
            </property>
           </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="token">
+           <property name="text">
+            <string>AccessToken：</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="SecretKeyLine"/>
          </item>
         </layout>
        </widget>

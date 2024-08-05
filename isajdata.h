@@ -11,6 +11,7 @@ public:
     void GetSettingFile();
     void SaveData(QString id, QString value);
     QString ReadData(QString id);
+
 private:
     QSettings *ISAJSetting;
 };

@@ -15,6 +15,8 @@ public:
     MainWin(QWidget *parent = nullptr);
     ~MainWin();
 
+    void SetWidget();
+
     void Connections();
 
 private:

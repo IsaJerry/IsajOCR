@@ -11,12 +11,22 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWin</string>
+   <string>ISAJ</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/img/Sources/ic.png</normaloff>:/img/Sources/ic.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_3">
-    <item>
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="0">
      <widget class="QWidget" name="dispWidget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QWidget" name="searchWidget" native="true">
@@ -83,8 +93,14 @@ selection-color: rgb(0, 0, 0);</string>
       </layout>
      </widget>
     </item>
-    <item>
+    <item row="0" column="1">
      <widget class="QWidget" name="cameraWidget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>250</width>
@@ -93,7 +109,7 @@ selection-color: rgb(0, 0, 0);</string>
       </property>
       <property name="maximumSize">
        <size>
-        <width>250</width>
+        <width>450</width>
         <height>16777215</height>
        </size>
       </property>
@@ -117,8 +133,8 @@ selection-color: rgb(0, 0, 0);</string>
             </property>
             <property name="maximumSize">
              <size>
-              <width>210</width>
-              <height>140</height>
+              <width>410</width>
+              <height>273</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -244,6 +260,8 @@ selection-color: rgb(0, 0, 0);</string>
       <string>Baidu</string>
      </property>
      <addaction name="actionSetting"/>
+     <addaction name="separator"/>
+     <addaction name="actionHandWrite"/>
     </widget>
     <addaction name="menuBaidu"/>
    </widget>
@@ -302,6 +320,14 @@ selection-color: rgb(0, 0, 0);</string>
     <string>设置</string>
    </property>
   </action>
+  <action name="actionHandWrite">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>手写</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -311,6 +337,8 @@ selection-color: rgb(0, 0, 0);</string>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

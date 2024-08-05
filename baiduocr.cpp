@@ -7,13 +7,17 @@ BaiduOCR::BaiduOCR(QWidget *parent) :
 {
     ui->setupUi(this);
     system = new OCRSystem();
-
     Connection();
 }
 
 BaiduOCR::~BaiduOCR()
 {
     delete ui;
+}
+
+void BaiduOCR::GetParent(QWidget *parent)
+{
+    this->parent = parent;
 }
 
 void BaiduOCR::SetWidget()
@@ -41,10 +45,20 @@ void BaiduOCR::OpenWidget()
         ui->apiKeyLine->setText(key);
         ui->SecretKeyLine->setText(data->ReadData("Secret Key"));
     }
-    ui->TokenLine->setText((new ISAJData())->ReadData("Accesstoken"));
+    ui->TokenLine->setText(data->ReadData("Accesstoken"));
     QString day = QString::number(system->GetLastTime());
     ui->label->setText(day + "天");
+    key = data->ReadData("LastCount");
+    if(key != "null")
+    {
+        ui->label_2->setText(key + "次");
+    }
     this->setVisible(true);
+}
+
+OCRSystem *BaiduOCR::GetOcr()
+{
+    return system;
 }
 
 void BaiduOCR::Connection()

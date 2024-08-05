@@ -16,13 +16,16 @@ public:
     explicit BaiduOCR(QWidget *parent = nullptr);
     ~BaiduOCR();
 
+    void GetParent(QWidget *parent);
     void SetWidget();
     void SetSetting();
     void OpenWidget();
+    OCRSystem *GetOcr();
     void Connection();
 
 private:
     Ui::BaiduOCR *ui;
+    QWidget *parent;
     OCRSystem *system;
 };
 

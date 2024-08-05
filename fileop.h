@@ -14,6 +14,7 @@ public:
     void SavePath(QString path);
     void ReadFromPath(QString path);
     bool isPath();
+    QString Image2Base64(QImage image);
 
     enum DialogModel
     {

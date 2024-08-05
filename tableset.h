@@ -1,7 +1,6 @@
 #ifndef TABLESET_H
 #define TABLESET_H
 
-#include "qmainwindow.h"
 #include <Includer.h>
 #include <fileop.h>
 

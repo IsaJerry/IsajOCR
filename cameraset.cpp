@@ -1,15 +1,17 @@
 #include "cameraset.h"
+#include "fileop.h"
 
 CameraSet::CameraSet()
 {
 
 }
 
-CameraSet::CameraSet(QVideoWidget *cameraDisp, QComboBox *box, QPushButton *srceenshot)
+CameraSet::CameraSet(QVideoWidget *cameraDisp, QComboBox *box, QPushButton *srceenshot, QWidget *parent)
 {
     this->CameraDisp = cameraDisp;
     this->cameraBox = box;
     this->ScreenShot = srceenshot;
+    this->parent = parent;
     CameraSelect();
 }
 
@@ -37,7 +39,15 @@ void CameraSet::Screenshot()
     connect(imgCapture, &QImageCapture::imageCaptured, this, [=](int id, const QImage &preview){
         QPixmap a;
         a.convertFromImage(preview);
+        ImageData = (new FileOp())->Image2Base64(preview);
+        QMessageBox::information(parent, "info", system->HandWriting(ImageData));
+        //qDebug()<<system->GetImageData();
     });
+}
+
+void CameraSet::SetOcr(OCRSystem *system)
+{
+    this->system = system;
 }
 
 void CameraSet::SetCamera()

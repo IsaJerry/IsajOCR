@@ -6,6 +6,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
+CONFIG += C++11
+
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -24,24 +26,7 @@ SOURCES += \
 HEADERS += \
     IncludeItems.h \
     Includer.h \
-    aip-cpp-sdk-4.16.7/base/base.h \
-    aip-cpp-sdk-4.16.7/base/base64.h \
-    aip-cpp-sdk-4.16.7/base/http.h \
-    aip-cpp-sdk-4.16.7/base/utils.h \
-    aip-cpp-sdk-4.16.7/body_analysis.h \
-    aip-cpp-sdk-4.16.7/content_censor.h \
-    aip-cpp-sdk-4.16.7/face.h \
-    aip-cpp-sdk-4.16.7/image_censor.h \
-    aip-cpp-sdk-4.16.7/image_classify.h \
-    aip-cpp-sdk-4.16.7/image_process.h \
-    aip-cpp-sdk-4.16.7/image_search.h \
-    aip-cpp-sdk-4.16.7/kg.h \
-    aip-cpp-sdk-4.16.7/machine_translation.h \
-    aip-cpp-sdk-4.16.7/nlp.h \
     aip-cpp-sdk-4.16.7/ocr.h \
-    aip-cpp-sdk-4.16.7/speech.h \
-    aip-cpp-sdk-4.16.7/video_censor.h \
-    aip-cpp-sdk-4.16.7/voice_censor.h \
     baiduocr.h \
     cameraset.h \
     fileop.h \
@@ -65,3 +50,11 @@ win32: LIBS += -L$$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-
 
 INCLUDEPATH += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/include
 DEPENDPATH += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/include
+
+RESOURCES += \
+    icons.qrc
+
+win32: LIBS += -L'C:/Program Files/OpenSSL/lib/' -llibcrypto
+
+INCLUDEPATH += 'C:/Program Files/OpenSSL/include'
+DEPENDPATH += 'C:/Program Files/OpenSSL/include'
