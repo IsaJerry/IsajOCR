@@ -10,7 +10,7 @@ FileOp::FileOp(QWidget *parent)
     this->parent = parent;
 }
 
-QString FileOp::OpenDialog(enum DialogModel model)
+QString FileOp::OpenDialog(enum DialogModel model, QString keyWord)
 {
     switch (model) {
     case Open:
@@ -33,6 +33,13 @@ QString FileOp::OpenDialog(enum DialogModel model)
             return QInputDialog::getText(parent, "添加一次记录", "输入标题：", QLineEdit::Normal);
         }
         return QInputDialog::getText(NULL, "添加一次记录", "输入标题：", QLineEdit::Normal);
+        break;
+    case KeyWord:
+        if(parent != nullptr)
+        {
+            return QInputDialog::getText(parent, "设置关键字", "输入标题：", QLineEdit::Normal, keyWord);
+        }
+        return QInputDialog::getText(NULL, "设置关键字", "输入标题：", QLineEdit::Normal, keyWord);
         break;
     default:
         return "";

@@ -6,12 +6,15 @@ CameraSet::CameraSet()
 
 }
 
-CameraSet::CameraSet(QVideoWidget *cameraDisp, QComboBox *box, QPushButton *srceenshot, QWidget *parent)
+CameraSet::CameraSet(QVideoWidget *cameraDisp, QComboBox *box, QPushButton *srceenshot, QWidget *parent, QList<QLineEdit *> WordsList)
 {
     this->CameraDisp = cameraDisp;
     this->cameraBox = box;
     this->ScreenShot = srceenshot;
     this->parent = parent;
+    file = new FileOp(parent);
+    this->WordsList = WordsList;
+    GetKeyWord();
     CameraSelect();
 }
 
@@ -33,21 +36,60 @@ void CameraSet::CameraClose()
     ScreenShot->setEnabled(false);
 }
 
+void CameraSet::GetOCRresult(int id, const QImage &preview)
+{
+    ImageData = (new FileOp())->Image2Base64(preview);
+    QString data = system->HandWriting(ImageData);
+    if(data != "success")
+    {
+        QMessageBox::information(parent, "info", data);
+    }
+    SetDisplay();
+}
+
+void CameraSet::SetDisplay()
+{
+    QStringList WordList = system->GetWordsList();
+    for (int i = 0; i < WordList.length(); i++)
+    {
+        if(WordList.at(i).contains(IdKeyWord, Qt::CaseSensitive))
+        {
+            WordsList.at(0)->setText(WordList.at(i));
+            table->OcrSearch(WordList.at(i));
+            continue;
+        }
+        WordsList.at(1)->setText(WordList.at(i));
+    }
+}
+
 void CameraSet::Screenshot()
 {
     imgCapture->capture();
-    connect(imgCapture, &QImageCapture::imageCaptured, this, [=](int id, const QImage &preview){
-        QPixmap a;
-        a.convertFromImage(preview);
-        ImageData = (new FileOp())->Image2Base64(preview);
-        QMessageBox::information(parent, "info", system->HandWriting(ImageData));
-        //qDebug()<<system->GetImageData();
-    });
+    connect(imgCapture, &QImageCapture::imageCaptured, this, &CameraSet::GetOCRresult);
 }
 
 void CameraSet::SetOcr(OCRSystem *system)
 {
     this->system = system;
+}
+
+void CameraSet::SetKeyWord()
+{
+    QString keyWord = (new ISAJData())->ReadData("IdKeyWord");
+    if(keyWord == "null")
+    {
+        keyWord = file->OpenDialog(FileOp::KeyWord);
+    }
+    else
+    {
+        keyWord = file->OpenDialog(FileOp::KeyWord, keyWord);
+    }
+    (new ISAJData())->SaveData("IdKeyWord", keyWord);
+}
+
+void CameraSet::GetKeyWord()
+{
+    IdKeyWord = (new ISAJData())->ReadData("IdKeyWord");
 }
 
 void CameraSet::SetCamera()
@@ -64,6 +106,11 @@ void CameraSet::SetCamera()
     imgCapture->setParent(Camera);
     capture.setImageCapture(imgCapture);
     capture.setVideoOutput(CameraDisp);
+}
+
+void CameraSet::SetTable(TableSet *table)
+{
+    this->table = table;
 }
 
 QStringList CameraSet::GetVideoDeviceList()

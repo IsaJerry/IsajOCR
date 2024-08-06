@@ -7,7 +7,6 @@
 #include <string>
 #include <curl/curl.h>
 #include <json/json.h>
-#include <QDebug>
 
 class OCRSystem
 {
@@ -19,10 +18,10 @@ public:
 
     void SetAccessTokenTime();
     int GetLastTime();
+    void GetResult();
+    QStringList GetWordsList();
     static size_t SaveAccessToken(void *ptr, size_t size, size_t nmemb, void *stream);
     static size_t getHandWrite(void *ptr, size_t size, size_t nmemb, void *stream);
-
-    //static std::string handwriting_result;
 
     enum OCRModel
     {
@@ -37,7 +36,7 @@ private:
     QString HandWriteUrl = "https://aip.baidubce.com/rest/2.0/ocr/v1/handwriting";
     QString AccessToken;
 
-
+    QStringList result;
 
 };
 

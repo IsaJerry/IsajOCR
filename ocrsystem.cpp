@@ -68,7 +68,8 @@ QString OCRSystem::HandWriting(QString imageData)
             return b;
         }
         curl_easy_cleanup(curl);
-        qDebug()<<(new ISAJData())->ReadData("TempData");
+        //qDebug()<<(new ISAJData())->ReadData("TempData");
+        GetResult();
         return "success";
     }
     else
@@ -95,6 +96,25 @@ int OCRSystem::GetLastTime()
     return 30 - setTime.daysTo(nowTime);
 }
 
+void OCRSystem::GetResult()
+{
+    QString res = (new ISAJData())->ReadData("TempData");
+    Json::Reader reader;
+    Json::Value root;
+    reader.parse(res.toStdString(),root);
+    int num = root["words_result_num"].asInt();
+    Json::Value words = root["words_result"];
+    for(int i=0; i<num; i++)
+    {
+        result << QString::fromStdString(words[i]["words"].asString());
+    }
+}
+
+QStringList OCRSystem::GetWordsList()
+{
+    return result;
+}
+
 void OCRSystem::SetLastCount(enum OCRModel model)
 {
     ISAJData *last = new ISAJData();
@@ -119,15 +139,6 @@ size_t OCRSystem::SaveAccessToken(void *ptr, size_t size, size_t nmemb, void *st
 
 size_t OCRSystem::getHandWrite(void *ptr, size_t size, size_t nmemb, void *stream)
 {
-    std::string s((char *) ptr, size * nmemb);
-    Json::Reader reader;
-    Json::Value root;
-    reader.parse(s,root);
-    int num = root["words_result_num"].asInt();
-    for(int i=0; i<num; i++)
-    {
-
-    }
     (new ISAJData())->SaveData("TempData", QString::fromStdString(std::string((char *) ptr, size * nmemb)));
     return size * nmemb;
 }

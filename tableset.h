@@ -21,6 +21,7 @@ public:
 
     void SetSearch();
     void SearchDisplay();
+    void OcrSearch(QString search);
 
     void SetDefault(bool checked);
 

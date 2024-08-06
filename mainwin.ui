@@ -259,9 +259,16 @@ selection-color: rgb(0, 0, 0);</string>
      <property name="title">
       <string>Baidu</string>
      </property>
+     <widget class="QMenu" name="menuHandWrite">
+      <property name="title">
+       <string>手写</string>
+      </property>
+      <addaction name="actionuseHandWrite"/>
+      <addaction name="actionSetIdKeyWord"/>
+     </widget>
      <addaction name="actionSetting"/>
      <addaction name="separator"/>
-     <addaction name="actionHandWrite"/>
+     <addaction name="menuHandWrite"/>
     </widget>
     <addaction name="menuBaidu"/>
    </widget>
@@ -320,12 +327,17 @@ selection-color: rgb(0, 0, 0);</string>
     <string>设置</string>
    </property>
   </action>
-  <action name="actionHandWrite">
+  <action name="actionuseHandWrite">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>手写</string>
+    <string>使用手写</string>
+   </property>
+  </action>
+  <action name="actionSetIdKeyWord">
+   <property name="text">
+    <string>设置学号关键字</string>
    </property>
   </action>
  </widget>

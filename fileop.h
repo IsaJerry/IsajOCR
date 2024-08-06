@@ -20,10 +20,11 @@ public:
     {
         Open = 1,
         Save = 2,
-        Text = 3
+        Text = 3,
+        KeyWord = 4
     };
 
-    QString OpenDialog(enum DialogModel model);
+    QString OpenDialog(enum DialogModel model, QString keyWord = "not set");
 
 private:
     QWidget *parent;

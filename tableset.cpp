@@ -111,3 +111,9 @@ void TableSet::SearchDisplay()
         Table->item(searchlist.at(0)->row(), searchlist.at(0)->column())->setSelected(true);
     }
 }
+
+void TableSet::OcrSearch(QString search)
+{
+    SearchLine->setText(search);
+    SearchDisplay();
+}
