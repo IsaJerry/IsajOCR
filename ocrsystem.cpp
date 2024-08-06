@@ -23,7 +23,6 @@ QString OCRSystem::getAccessToken(QString apiKey, QString secretKey)
         {
             QString a = curl_easy_strerror(result_code);
             QString b = "curl_easy_perform() failed: \n" + a;
-            //fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result_code));
             curl_easy_cleanup(curl);
             return b;
         }
@@ -68,7 +67,6 @@ QString OCRSystem::HandWriting(QString imageData)
             return b;
         }
         curl_easy_cleanup(curl);
-        //qDebug()<<(new ISAJData())->ReadData("TempData");
         GetResult();
         return "success";
     }

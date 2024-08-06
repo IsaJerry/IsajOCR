@@ -22,6 +22,7 @@
 #include <QPushButton>
 #include <QPixmap>
 #include <QBuffer>
+#include <QTimer>
 
 
 #endif // INCLUDER_H

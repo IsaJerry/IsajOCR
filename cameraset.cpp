@@ -38,7 +38,7 @@ void CameraSet::CameraClose()
 
 void CameraSet::GetOCRresult(int id, const QImage &preview)
 {
-    ImageData = (new FileOp())->Image2Base64(preview);
+    ImageData = file->Image2Base64(preview);
     QString data = system->HandWriting(ImageData);
     if(data != "success")
     {
@@ -50,6 +50,8 @@ void CameraSet::GetOCRresult(int id, const QImage &preview)
 void CameraSet::SetDisplay()
 {
     QStringList WordList = system->GetWordsList();
+    WordsList.at(0)->setText("");
+    WordsList.at(1)->setText("");
     for (int i = 0; i < WordList.length(); i++)
     {
         if(WordList.at(i).contains(IdKeyWord, Qt::CaseSensitive))
@@ -60,6 +62,7 @@ void CameraSet::SetDisplay()
         }
         WordsList.at(1)->setText(WordList.at(i));
     }
+    disconnect(imgCapture, &QImageCapture::imageCaptured, this, &CameraSet::GetOCRresult);
 }
 
 void CameraSet::Screenshot()
@@ -75,16 +78,15 @@ void CameraSet::SetOcr(OCRSystem *system)
 
 void CameraSet::SetKeyWord()
 {
-    QString keyWord = (new ISAJData())->ReadData("IdKeyWord");
-    if(keyWord == "null")
+    if(IdKeyWord == "null")
     {
-        keyWord = file->OpenDialog(FileOp::KeyWord);
+        IdKeyWord = file->OpenDialog(FileOp::KeyWord);
     }
     else
     {
-        keyWord = file->OpenDialog(FileOp::KeyWord, keyWord);
+        IdKeyWord = file->OpenDialog(FileOp::KeyWord, IdKeyWord);
     }
-    (new ISAJData())->SaveData("IdKeyWord", keyWord);
+    (new ISAJData())->SaveData("IdKeyWord", IdKeyWord);
 }
 
 void CameraSet::GetKeyWord()
