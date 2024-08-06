@@ -21,6 +21,8 @@ public:
 
 private:
     Ui::MainWin *ui;
+
+protected:
     TableSet *table;
     CameraSet *camera;
     BaiduOCR *baidu;

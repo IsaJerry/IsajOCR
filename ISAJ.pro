@@ -26,7 +26,6 @@ SOURCES += \
 HEADERS += \
     IncludeItems.h \
     Includer.h \
-    aip-cpp-sdk-4.16.7/ocr.h \
     baiduocr.h \
     cameraset.h \
     fileop.h \
