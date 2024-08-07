@@ -7,7 +7,6 @@ ISAJData::ISAJData()
 
 ISAJData::~ISAJData()
 {
-    //ISAJSetting->sync();
     delete ISAJSetting;
 }
 

@@ -27,5 +27,6 @@ protected:
     CameraSet *camera;
     BaiduOCR *baidu;
 
+
 };
 #endif // MAINWIN_H

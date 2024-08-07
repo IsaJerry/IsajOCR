@@ -3,6 +3,7 @@
 
 #include <Includer.h>
 #include <fileop.h>
+#include <QMenu>
 
 class TableSet : public QMainWindow
 {
@@ -19,11 +20,19 @@ public:
     void AddRow();
     void AddColumn();
 
+    void DeleteItem(int row, int column);
+    void DeleteLine(int row, int column);
+
+    void removeData(QString data);
+
     void SetSearch();
+    void Refeash();
     void SearchDisplay();
     void OcrSearch(QString search);
 
     void SetDefault(bool checked);
+
+    void Connections();
 
 private:
     QTableWidget *Table;
@@ -33,6 +42,9 @@ private:
     QAction *DefaultOp;
     QAction *Save;
     FileOp *file;
+
+protected:
+    void ActionMenu(int row, int column);
 };
 
 #endif // TABLESET_H

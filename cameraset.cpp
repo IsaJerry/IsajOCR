@@ -78,14 +78,24 @@ void CameraSet::SetOcr(OCRSystem *system)
 
 void CameraSet::SetKeyWord()
 {
+    QString keyword;
     if(IdKeyWord == "null")
     {
-        IdKeyWord = file->OpenDialog(FileOp::KeyWord);
+        keyword = file->OpenDialog(FileOp::KeyWord);
+        if(keyword == "null")
+        {
+            return;
+        }
     }
     else
     {
-        IdKeyWord = file->OpenDialog(FileOp::KeyWord, IdKeyWord);
+        keyword = file->OpenDialog(FileOp::KeyWord, IdKeyWord);
+        if(keyword == "null")
+        {
+            return;
+        }
     }
+    IdKeyWord = keyword;
     (new ISAJData())->SaveData("IdKeyWord", IdKeyWord);
 }
 

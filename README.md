@@ -1,1 +1,6 @@
-An app with ocr sysyem
+An app with ocr system
+
+现在它可以用来识别手写文字，并在左边表格中自动搜索出来；
+百度ocr的获取token正常运行，在ocr-百度-设置中设置；
+百度ocr的手写识别正常；
+摄像机可进行选择，并设置与打开；

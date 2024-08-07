@@ -25,7 +25,7 @@ MainWin::~MainWin()
 
 void MainWin::SetWidget()
 {
-    ui->cameraWidget->resize(250, 380);
+    //ui->cameraWidget->resize(250, 380);
 }
 
 void MainWin::Connections()
