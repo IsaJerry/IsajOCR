@@ -100,15 +100,12 @@ QStringList FileOp::ReadFile()
     {
         fileData << "ERROR";
     }
+    ishasPath = false;
     return fileData;
 }
 
 void FileOp::WriteTable(QTableWidget *table)
 {
-    if((new ISAJData())->ReadData("DefaultLoad") == "true")
-    {
-        SavePath(Path);
-    }
     Path = OpenDialog(DialogModel::Save);
     if(Path != "")
     {
@@ -147,6 +144,10 @@ void FileOp::WriteTable(QTableWidget *table)
             in<<"\n";
         }
         File.close();
+    }
+    if((new ISAJData())->ReadData("DefaultLoad") == "true")
+    {
+        SavePath(Path);
     }
 }
 

@@ -20,10 +20,7 @@
 #include <QCoreApplication>
 #include <QSettings>
 #include <QPushButton>
-#include <QPixmap>
 #include <QBuffer>
-#include <QTimer>
-#include <QMouseEvent>
 
 
 #endif // INCLUDER_H

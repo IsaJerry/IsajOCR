@@ -40,20 +40,19 @@ FORMS += \
     baiduocr.ui \
     mainwin.ui
 
+RC_ICONS = Sources\icon.ico
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
 
 win32: LIBS += -L$$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/lib/ -llibcurl_debug
 
 INCLUDEPATH += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/include
 DEPENDPATH += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/include
 
-RESOURCES += \
-    icons.qrc
-
-win32: LIBS += -L'C:/Program Files/OpenSSL/lib/' -llibcrypto
-
-INCLUDEPATH += 'C:/Program Files/OpenSSL/include'
-DEPENDPATH += 'C:/Program Files/OpenSSL/include'
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/lib/libcurl_debug.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/lib/liblibcurl_debug.a

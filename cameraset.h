@@ -12,20 +12,34 @@ public:
     QList<QCameraDevice> cameras;
     QCamera *Camera;
 
+
+    enum SearchType
+    {
+        UseId = 1,
+        UseName = 2
+    };
+
     CameraSet();
     CameraSet(QVideoWidget * cameraDisp, QComboBox *box, QPushButton *srceenshot, QWidget *parent, QList<QLineEdit *> WordsList);
     void SetCamera();
     void SetTable(TableSet *table);
+    void SetUseSearchBtn(QList<QAction *> uselist);
     void CamaraOpen();
     void CameraClose();
     void Screenshot();
     void SetOcr(OCRSystem *system);
+
+    void SetSearchBtn();
+    void isUseId(bool checked);
+    void isUseName(bool checked);
 
     void SetKeyWord();
     void GetKeyWord();
     
     void GetOCRresult(int id, const QImage &preview);
     void SetDisplay();
+    void SearchUse(enum SearchType type, QString text);
+    bool isPairing(QString text, enum SearchType type);
     
 private:
     QWidget *parent;
@@ -42,6 +56,7 @@ private:
 
     QString IdKeyWord;
     QList<QLineEdit *> WordsList;
+    QList<QAction *> SearchUseList;
 
     QStringList GetVideoDeviceList();
     void CameraSelect();
