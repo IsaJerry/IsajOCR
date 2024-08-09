@@ -17,6 +17,11 @@ TableSet::TableSet(QTableWidget *table, QWidget *parent, QLineEdit *searchLine, 
     Connections();
 }
 
+void TableSet::setBottomBar(QStatusBar *bar)
+{
+    file->setBottomBar(bar);
+}
+
 void TableSet::DefaultLoad()
 {
     if((new ISAJData())->ReadData("DefaultLoad") == "true")
@@ -55,6 +60,11 @@ void TableSet::SetTable()
     }
 }
 
+void TableSet::NewTable()
+{
+
+}
+
 void TableSet::DataOrRecode(int row, int column, QString text)
 {
     if(text != "已提交" && text != "未提交")
@@ -76,6 +86,8 @@ void TableSet::SetDefault(bool checked)
     if(checked)
     {
         (new ISAJData())->SaveData("DefaultLoad", "true");
+        file->SavePath(file->RetnPath());
+        isNew = false;
     }
     else
     {
@@ -87,12 +99,18 @@ void TableSet::SetDefault(bool checked)
 void TableSet::SaveTable()
 {
     file->WriteTable(Table);
+    isNew = false;
 }
 
 QStringList TableSet::GetTableLineData(QString linedata)
 {
     QStringList tabletata;
     return tabletata = linedata.split("\t");
+}
+
+bool TableSet::RetnisNew()
+{
+    return isNew;
 }
 
 void TableSet::AddRecode()
@@ -106,16 +124,19 @@ void TableSet::AddRecode()
     //couldAdd = true;
     Table->setColumnCount(Table->columnCount()+1);
     Table->setItem(0, Table->columnCount()-1, new QTableWidgetItem(title));
+    isNew = true;
 }
 
 void TableSet::AddRow()
 {
     Table->setRowCount(Table->rowCount()+1);
+    isNew = true;
 }
 
 void TableSet::AddColumn()
 {
     Table->setColumnCount(Table->columnCount()+1);
+    isNew = true;
 }
 
 bool TableSet::RetnOcrColumn()
@@ -134,6 +155,7 @@ void TableSet::DeleteItem(int row, int column)
     QString data = Table->item(row, column)->text();
     Table->setItem(row, column, new QTableWidgetItem(""));
     removeData(data);
+    isNew = true;
 }
 
 void TableSet::DeleteLine(int row, int column)
@@ -147,6 +169,7 @@ void TableSet::DeleteLine(int row, int column)
         }
     }
     Table->removeRow(row);
+    isNew = true;
 }
 
 void TableSet::DeleteColumn(int row, int column)
@@ -160,6 +183,7 @@ void TableSet::DeleteColumn(int row, int column)
         }
     }
     Table->removeColumn(column);
+    isNew = true;
 }
 
 void TableSet::MarkAllNotHandle(int column)
@@ -172,11 +196,13 @@ void TableSet::MarkAllNotHandle(int column)
             setHandled(i, column, notHandled);
         }
     }
+    isNew = true;
 }
 
 void TableSet::setHandled(int row, int column, Handle handle)
 {
     Table->setItem(row, column, Handled(handle));
+    isNew = true;
 }
 
 QTableWidgetItem *TableSet::Handled(Handle handle)

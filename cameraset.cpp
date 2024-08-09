@@ -6,7 +6,8 @@ CameraSet::CameraSet()
 
 }
 
-CameraSet::CameraSet(QVideoWidget *cameraDisp, QComboBox *box, QPushButton *srceenshot, QWidget *parent, QList<QLineEdit *> WordsList)
+CameraSet::CameraSet(QVideoWidget *cameraDisp, QComboBox *box, QPushButton *srceenshot, QWidget *parent,
+                     QList<QLineEdit *> WordsList, QList<QAction *> uselist)
 {
     this->CameraDisp = cameraDisp;
     this->cameraBox = box;
@@ -14,6 +15,7 @@ CameraSet::CameraSet(QVideoWidget *cameraDisp, QComboBox *box, QPushButton *srce
     this->parent = parent;
     file = new FileOp(parent);
     this->WordsList = WordsList;
+    SetUseSearchBtn(uselist);
     GetKeyWord();
     SetSearchBtn();
     CameraSelect();
@@ -143,14 +145,13 @@ void CameraSet::SetOcr(OCRSystem *system)
 void CameraSet::SetSearchBtn()
 {
     ISAJData *data = new ISAJData();
-    //qDebug()<<"1";
-    //if(data->ReadData("UseId") == "null")
-    //{
-        //SearchUseList.at(0)->setChecked(true);
-        //SearchUseList.at(1)->setChecked(false);
-        //return;
-    //}
-    /*if(data->ReadData("UseId") == "true")
+    if(data->ReadData("UseId") == "null")
+    {
+        SearchUseList.at(0)->setChecked(true);
+        SearchUseList.at(1)->setChecked(false);
+        return;
+    }
+    if(data->ReadData("UseId") == "true")
     {
         SearchUseList.at(0)->setChecked(true);
         SearchUseList.at(1)->setChecked(false);
@@ -161,7 +162,7 @@ void CameraSet::SetSearchBtn()
         SearchUseList.at(0)->setChecked(false);
         SearchUseList.at(1)->setChecked(true);
         return;
-    }*/
+    }
 }
 
 void CameraSet::isUseId(bool checked)

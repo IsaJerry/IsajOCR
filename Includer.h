@@ -21,6 +21,8 @@
 #include <QSettings>
 #include <QPushButton>
 #include <QBuffer>
+#include <QStatusBar>
+#include <QLabel>
 
 
 #endif // INCLUDER_H

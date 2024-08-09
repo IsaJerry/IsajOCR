@@ -10,10 +10,12 @@ public:
     FileOp();
     FileOp(QWidget *parent);
     QStringList ReadFile();
+    void setBottomBar(QStatusBar *bar);
     void WriteTable(QTableWidget *table);
     void SavePath(QString path);
     void ReadFromPath(QString path);
     bool isPath();
+    QString RetnPath();
     QString Image2Base64(QImage image);
 
     enum DialogModel
@@ -28,6 +30,7 @@ public:
 
 private:
     QWidget *parent;
+    QStatusBar *bar;
     QString Path;
     bool ishasPath = false;
 };

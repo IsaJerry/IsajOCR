@@ -14,7 +14,7 @@
    <string>ISAJ</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons.qrc">
+   <iconset>
     <normaloff>:/img/Sources/icon.png</normaloff>:/img/Sources/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -242,6 +242,7 @@ selection-color: rgb(0, 0, 0);</string>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="menu_2"/>
+    <addaction name="actionNewTable"/>
    </widget>
    <widget class="QMenu" name="Edit">
     <property name="title">
@@ -373,6 +374,11 @@ selection-color: rgb(0, 0, 0);</string>
     <string>通过名字</string>
    </property>
   </action>
+  <action name="actionNewTable">
+   <property name="text">
+    <string>新建</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -382,8 +388,6 @@ selection-color: rgb(0, 0, 0);</string>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

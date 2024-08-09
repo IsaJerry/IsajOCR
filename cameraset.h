@@ -20,7 +20,7 @@ public:
     };
 
     CameraSet();
-    CameraSet(QVideoWidget * cameraDisp, QComboBox *box, QPushButton *srceenshot, QWidget *parent, QList<QLineEdit *> WordsList);
+    CameraSet(QVideoWidget * cameraDisp, QComboBox *box, QPushButton *srceenshot, QWidget *parent, QList<QLineEdit *> WordsList, QList<QAction *> uselist);
     void SetCamera();
     void SetTable(TableSet *table);
     void SetUseSearchBtn(QList<QAction *> uselist);

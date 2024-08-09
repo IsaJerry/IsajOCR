@@ -52,7 +52,6 @@ QString FileOp::OpenDialog(enum DialogModel model, QString keyWord)
             result = QInputDialog::getText(parent, "设置关键字", "输入标题：", QLineEdit::Normal, keyWord, &ok);
             if(ok)
             {
-                qDebug()<<"yes";
                 return result;
             }
             return "null";
@@ -95,6 +94,10 @@ QStringList FileOp::ReadFile()
             QMessageBox::warning(parent, "错误", "文件打开失败");
         }
         File.close();
+        if((new ISAJData())->ReadData("DefaultLoad") == "true")
+        {
+            SavePath(Path);
+        }
     }
     else
     {
@@ -102,6 +105,11 @@ QStringList FileOp::ReadFile()
     }
     ishasPath = false;
     return fileData;
+}
+
+void FileOp::setBottomBar(QStatusBar *bar)
+{
+    this->bar = bar;
 }
 
 void FileOp::WriteTable(QTableWidget *table)
@@ -149,12 +157,14 @@ void FileOp::WriteTable(QTableWidget *table)
     {
         SavePath(Path);
     }
+    //bar->addWidget(new QLabel("文件已打开" + Path));
 }
 
 void FileOp::SavePath(QString path)
 {
     ISAJData *data = new ISAJData();
     data->SaveData("filePath", path);
+    //bar->addWidget(new QLabel("文件已保存"));
 }
 
 void FileOp::ReadFromPath(QString path)
@@ -169,6 +179,11 @@ void FileOp::ReadFromPath(QString path)
 bool FileOp::isPath()
 {
     return ishasPath;
+}
+
+QString FileOp::RetnPath()
+{
+    return Path;
 }
 
 QString FileOp::Image2Base64(QImage image)

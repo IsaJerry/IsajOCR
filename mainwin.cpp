@@ -6,17 +6,7 @@ MainWin::MainWin(QWidget *parent)
     , ui(new Ui::MainWin)
 {
     ui->setupUi(this);
-    QList<QLineEdit *> WordsList;
-    WordsList << ui->idLine << ui->nameLine;
-    table = new TableSet(ui->table, this, ui->searchLine, ui->actionDefaultOpen, ui->actionSave);
-    camera = new CameraSet(ui->cameraDisp, ui->cameralistBox, ui->ScreenShot, this, WordsList);
-    camera->SetTable(table);
-    QList<QAction *> btn;
-    btn << ui->actionAsID << ui->actionAsname;
-    baidu = new BaiduOCR();
-    baidu->GetParent(this);
-    camera->SetOcr(baidu->GetOcr());
-    camera->SetUseSearchBtn(btn);
+    SetUnits();
     SetWidget();
     Connections();
 }
@@ -26,9 +16,47 @@ MainWin::~MainWin()
     delete ui;
 }
 
+void MainWin::SetUnits()
+{
+    QList<QLineEdit *> WordsList;
+    WordsList << ui->idLine << ui->nameLine;
+    QList<QAction *> btn;
+    btn << ui->actionAsID << ui->actionAsname;
+    table = new TableSet(ui->table, this, ui->searchLine, ui->actionDefaultOpen, ui->actionSave);
+    camera = new CameraSet(ui->cameraDisp, ui->cameralistBox, ui->ScreenShot, this, WordsList, btn);
+    camera->SetTable(table);
+    table->setBottomBar(ui->statusbar);
+    baidu = new BaiduOCR();
+    baidu->GetParent(this);
+    camera->SetOcr(baidu->GetOcr());
+}
+
 void MainWin::SetWidget()
 {
     //ui->cameraWidget->resize(250, 380);
+    ui->statusbar->addWidget(new QLabel("v 0.0.0 Alpha"));
+}
+
+void MainWin::closeEvent(QCloseEvent *event)
+{
+    if(table->RetnisNew())
+    {
+        QMessageBox::StandardButton res = QMessageBox::question(this, "是否保存", "是否保存之后再退出？",
+        QMessageBox::Yes|QMessageBox::No |QMessageBox::Cancel, QMessageBox::No);
+        if(res == QMessageBox::No)
+        {
+            event->accept();
+        }
+        else if(res == QMessageBox::Yes)
+        {
+            table->SaveTable();
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
 }
 
 void MainWin::Connections()
@@ -40,6 +68,7 @@ void MainWin::Connections()
     connect(ui->actionColumn, &QAction::triggered, table, &TableSet::AddColumn);
     connect(ui->actionSetting, &QAction::triggered, baidu, &BaiduOCR::OpenWidget);
     connect(ui->actionSetIdKeyWord, &QAction::triggered, camera, &CameraSet::SetKeyWord);
+    connect(ui->actionNewTable, &QAction::triggered, table, &TableSet::NewTable);
 
 
     connect(ui->actionAsID, &QAction::triggered, camera, &CameraSet::isUseId);

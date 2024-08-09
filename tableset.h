@@ -17,11 +17,14 @@ public:
         notHandled = 0
     };
 
+    void setBottomBar(QStatusBar *bar);
     void DefaultLoad();
     void SetTable();
+    void NewTable();
     void DataOrRecode(int row, int column, QString text);
     void SaveTable();
     QStringList GetTableLineData(QString linedata);
+    bool RetnisNew();
 
     void AddRecode();
     void AddRow();
@@ -60,6 +63,7 @@ private:
     FileOp *file;
     int ocrTarget;
     bool couldAdd = false;
+    bool isNew = false;
 
 protected:
     void ActionMenu(int row, int column);

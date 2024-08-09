@@ -1,6 +1,7 @@
 #ifndef MAINWIN_H
 #define MAINWIN_H
 
+#include <QCloseEvent>
 #include <IncludeItems.h>
 
 QT_BEGIN_NAMESPACE
@@ -15,7 +16,9 @@ public:
     MainWin(QWidget *parent = nullptr);
     ~MainWin();
 
+    void SetUnits();
     void SetWidget();
+    void closeEvent(QCloseEvent *event);
 
     void Connections();
 
