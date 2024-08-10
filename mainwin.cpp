@@ -63,9 +63,9 @@ void MainWin::Connections()
 {
     connect(ui->actionOpen, &QAction::triggered, table, &TableSet::SetTable);
     connect(ui->actionSave, &QAction::triggered, table, &TableSet::SaveTable);
-    connect(ui->actionRecode, &QAction::triggered, table, &TableSet::AddRecode);
-    connect(ui->actionRow, &QAction::triggered, table, &TableSet::AddRow);
-    connect(ui->actionColumn, &QAction::triggered, table, &TableSet::AddColumn);
+    connect(ui->actionRecode, &QAction::triggered, table, [=](){table->AddRecode();});
+    connect(ui->actionRow, &QAction::triggered, table, [=](){table->AddRow();});
+    connect(ui->actionColumn, &QAction::triggered, table, [=](){table->AddColumn();});
     connect(ui->actionSetting, &QAction::triggered, baidu, &BaiduOCR::OpenWidget);
     connect(ui->actionSetIdKeyWord, &QAction::triggered, camera, &CameraSet::SetKeyWord);
     connect(ui->actionNewTable, &QAction::triggered, table, &TableSet::NewTable);

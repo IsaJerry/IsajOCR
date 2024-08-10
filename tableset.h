@@ -26,20 +26,23 @@ public:
     QStringList GetTableLineData(QString linedata);
     bool RetnisNew();
 
-    void AddRecode();
-    void AddRow();
-    void AddColumn();
+    void AddRecode(int column = -1);
+    void AddRow(int row = -1);
+    void AddColumn(int column = -1);
 
     bool RetnOcrColumn();
+    void AltItem(int row, int column);
     void SetOcrTarget(int column);
+    void SetFixed(int row, int column);
     void DeleteItem(int row, int column);
-    void DeleteLine(int row, int column);
+    void DeleteLine(int row);
     void DeleteColumn(int row, int column);
 
     void MarkAllNotHandle(int column);
     void setHandled(int row, int column, enum Handle handle);
     QTableWidgetItem *Handled(enum Handle handle);
 
+    void addData(QString data);
     void removeData(QString data);
 
     void SetSearch();
@@ -55,6 +58,7 @@ public:
 private:
     QList<QTableWidgetItem *> searchlist;
     QTableWidget *Table;
+    QHeaderView *Header;
     QLineEdit *SearchLine;
     QStringList SearchTipList;
     QCompleter *SearchTips;

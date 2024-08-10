@@ -128,7 +128,6 @@ bool CameraSet::isPairing(QString text, SearchType type)
         default:
             break;
     }
-
 }
 
 void CameraSet::Screenshot()

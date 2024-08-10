@@ -23,6 +23,7 @@
 #include <QBuffer>
 #include <QStatusBar>
 #include <QLabel>
+#include <QHeaderView>
 
 
 #endif // INCLUDER_H

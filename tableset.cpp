@@ -57,6 +57,7 @@ void TableSet::SetTable()
         }
         SetSearch();
         Save->setEnabled(true);
+        Header = Table->horizontalHeader();
     }
 }
 
@@ -113,29 +114,50 @@ bool TableSet::RetnisNew()
     return isNew;
 }
 
-void TableSet::AddRecode()
+void TableSet::AddRecode(int column)
 {
-    //couldAdd = false;
     QString title = file->OpenDialog(file->Text);
     if(title == "null")
     {
         return;
     }
-    //couldAdd = true;
-    Table->setColumnCount(Table->columnCount()+1);
-    Table->setItem(0, Table->columnCount()-1, new QTableWidgetItem(title));
+    if(column == -1)
+    {
+        Table->insertColumn(Table->columnCount());
+        Table->setItem(0, Table->columnCount()-1, new QTableWidgetItem(title));
+    }
+    else
+    {
+        Table->insertColumn(column);
+        Table->setItem(0, column-1, new QTableWidgetItem(title));
+    }
+    isNew = true;
+    addData(title);
+}
+
+void TableSet::AddRow(int row)
+{
+    if(row == -1)
+    {
+        Table->insertRow(Table->rowCount());
+    }
+    else
+    {
+        Table->insertRow(row);
+    }
     isNew = true;
 }
 
-void TableSet::AddRow()
+void TableSet::AddColumn(int column)
 {
-    Table->setRowCount(Table->rowCount()+1);
-    isNew = true;
-}
-
-void TableSet::AddColumn()
-{
-    Table->setColumnCount(Table->columnCount()+1);
+    if(column == -1)
+    {
+        Table->insertColumn(Table->columnCount());
+    }
+    else
+    {
+        Table->insertColumn(column);
+    }
     isNew = true;
 }
 
@@ -144,21 +166,47 @@ bool TableSet::RetnOcrColumn()
     return couldAdd;
 }
 
+void TableSet::AltItem(int row, int column)
+{
+    QString tips;
+    if(Table->item(row, column) == NULL)
+    {
+        tips = "";
+    }
+    tips = Table->item(row, column)->text();
+    QString text = file->OpenDialog(file->Alter, tips);
+    if(text != "null")
+    {
+        Table->setItem(row, column, new QTableWidgetItem(text));
+        removeData(tips);
+        addData(text);
+    }
+}
+
 void TableSet::SetOcrTarget(int column)
 {
     ocrTarget = column;
     couldAdd = true;
 }
 
+void TableSet::SetFixed(int row, int column)
+{
+    //int width = Table->columnWidth(column);
+    Header->setSectionResizeMode(column, QHeaderView::Fixed);
+    //Header->resizeSection(column, width);
+}
+
 void TableSet::DeleteItem(int row, int column)
 {
-    QString data = Table->item(row, column)->text();
+    if(Table->item(row, column) != NULL)
+    {
+        removeData(Table->item(row, column)->text());
+    }
     Table->setItem(row, column, new QTableWidgetItem(""));
-    removeData(data);
     isNew = true;
 }
 
-void TableSet::DeleteLine(int row, int column)
+void TableSet::DeleteLine(int row)
 {
     int col = Table->columnCount();
     for(int i=0; i<col; i++)
@@ -222,7 +270,13 @@ QTableWidgetItem *TableSet::Handled(Handle handle)
     default:
         break;
     }
+    addData(item->text());
     return item;
+}
+
+void TableSet::addData(QString data)
+{
+    SearchTipList.append(data);
 }
 
 void TableSet::removeData(QString data)
@@ -273,34 +327,28 @@ void TableSet::Connections()
 void TableSet::ActionMenu(int row, int column)
 {
     QMenu menu;
+    QAction *Altitem = menu.addAction("修改");
     QAction *setocr = menu.addAction("设为Orc目标");
+    QAction *setForizon = menu.addAction("冻结该列");
+    QAction *addRowAt = menu.addAction("在此处添加一行");
+    QAction *addColumnAt = menu.addAction("在此次添加一列");
     QAction *isHandle = menu.addAction("设为已提交");
     QAction *notHandle = menu.addAction("设为未提交");
     QAction *markAll = menu.addAction("标记所有未提交");
     QAction *delt = menu.addAction("删除");
     QAction *delLine = menu.addAction("删除该行");
     QAction *delCol = menu.addAction("删除该列");
-    connect(setocr, &QAction::triggered, Table, [=](){
-        SetOcrTarget(column);
-    });
-    connect(isHandle, &QAction::triggered, Table, [=](){
-        setHandled(row, column, isHandled);
-    });
-    connect(notHandle, &QAction::triggered, Table, [=](){
-        setHandled(row, column, notHandled);
-    });
-    connect(markAll, &QAction::triggered, Table, [=](){
-        MarkAllNotHandle(column);
-    });
-    connect(delt, &QAction::triggered, Table, [=](){
-        DeleteItem(row, column);
-    });
-    connect(delLine, &QAction::triggered, Table, [=](){
-        DeleteLine(row, column);
-    });
-    connect(delCol, &QAction::triggered, Table, [=](){
-        DeleteColumn(row, column);
-    });
+    connect(Altitem, &QAction::triggered, Table, [=](){AltItem(row, column);});
+    connect(setocr, &QAction::triggered, Table, [=](){SetOcrTarget(column);});
+    connect(setForizon, &QAction::triggered, Table, [=](){SetFixed(row, column);});
+    connect(addRowAt, &QAction::triggered, Table, [=](){AddRow(row);});
+    connect(addColumnAt, &QAction::triggered, Table, [=](){AddColumn(column);});
+    connect(isHandle, &QAction::triggered, Table, [=](){setHandled(row, column, isHandled);});
+    connect(notHandle, &QAction::triggered, Table, [=](){setHandled(row, column, notHandled);});
+    connect(markAll, &QAction::triggered, Table, [=](){MarkAllNotHandle(column);});
+    connect(delt, &QAction::triggered, Table, [=](){DeleteItem(row, column);});
+    connect(delLine, &QAction::triggered, Table, [=](){DeleteLine(row);});
+    connect(delCol, &QAction::triggered, Table, [=](){DeleteColumn(row, column);});
     menu.exec(QCursor::pos());
 }
 

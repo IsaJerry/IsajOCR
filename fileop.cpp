@@ -49,14 +49,31 @@ QString FileOp::OpenDialog(enum DialogModel model, QString keyWord)
     case KeyWord:
         if(parent != nullptr)
         {
-            result = QInputDialog::getText(parent, "设置关键字", "输入标题：", QLineEdit::Normal, keyWord, &ok);
+            result = QInputDialog::getText(parent, "设置关键字", "学号关键字：", QLineEdit::Normal, keyWord, &ok);
             if(ok)
             {
                 return result;
             }
             return "null";
         }
-        result = QInputDialog::getText(NULL, "设置关键字", "输入标题：", QLineEdit::Normal, keyWord, &ok);
+        result = QInputDialog::getText(NULL, "设置关键字", "学号关键字：", QLineEdit::Normal, keyWord, &ok);
+            if(ok)
+            {
+                return result;
+            }
+            return "null";
+        break;
+    case Alter:
+        if(parent != nullptr)
+        {
+            result = QInputDialog::getText(parent, "修改单元格内容", "修改为：", QLineEdit::Normal, keyWord, &ok);
+            if(ok)
+            {
+                return result;
+            }
+            return "null";
+        }
+        result = QInputDialog::getText(NULL, "修改单元格内容", "修改为：", QLineEdit::Normal, keyWord, &ok);
             if(ok)
             {
                 return result;
