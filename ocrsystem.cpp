@@ -113,6 +113,8 @@ QStringList OCRSystem::GetWordsList()
     return result;
 }
 
+
+// question
 void OCRSystem::SetLastCount(enum OCRModel model)
 {
     ISAJData *last = new ISAJData();

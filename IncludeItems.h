@@ -5,6 +5,7 @@
 #include "cameraset.h"
 #include "isajdata.h"
 #include "baiduocr.h"
+#include "preset.h"
 
 #include <Includer.h>
 

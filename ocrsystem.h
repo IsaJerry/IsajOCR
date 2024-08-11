@@ -20,6 +20,8 @@ public:
     int GetLastTime();
     void GetResult();
     QStringList GetWordsList();
+
+    //OCR callback
     static size_t SaveAccessToken(void *ptr, size_t size, size_t nmemb, void *stream);
     static size_t getHandWrite(void *ptr, size_t size, size_t nmemb, void *stream);
 

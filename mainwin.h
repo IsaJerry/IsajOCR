@@ -18,6 +18,7 @@ public:
 
     void SetUnits();
     void SetWidget();
+    void PreSetPage();
     void closeEvent(QCloseEvent *event);
 
     void Connections();
@@ -29,6 +30,7 @@ protected:
     TableSet *table;
     CameraSet *camera;
     BaiduOCR *baidu;
+    PreSet *preset;
 
 
 };

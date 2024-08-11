@@ -45,7 +45,11 @@ void BaiduOCR::OpenWidget()
         ui->apiKeyLine->setText(key);
         ui->SecretKeyLine->setText(data->ReadData("Secret Key"));
     }
-    ui->TokenLine->setText(data->ReadData("Accesstoken"));
+    key = data->ReadData("Accesstoken");
+    if(key != "null")
+    {
+        ui->TokenLine->setText(key);
+    }
     QString day = QString::number(system->GetLastTime());
     ui->label->setText(day + "天");
     key = data->ReadData("LastCount");

@@ -42,10 +42,10 @@ void TableSet::DefaultLoad()
 void TableSet::SetTable()
 {
     QStringList list = file->ReadFile();
-    Table->setRowCount(list.length());
-    Table->setColumnCount(GetTableLineData(list.at(0)).length());
     if(list.at(0) != "ERROR")
     {
+        Table->setRowCount(list.length());
+        Table->setColumnCount(GetTableLineData(list.at(0)).length());
         for(int i=0; i<list.length(); i++)
         {
             QStringList datalist = GetTableLineData(list.at(i));
@@ -63,7 +63,26 @@ void TableSet::SetTable()
 
 void TableSet::NewTable()
 {
-
+    Table->clear();
+    ISAJData *data = new ISAJData();
+    QString text = data->ReadData(LoadRow);
+    if(text != ISAJnull)
+    {
+        Table->setRowCount(text.toInt());
+    }
+    else
+    {
+        Table->setRowCount(72);
+    }
+    text = data->ReadData(LoadColumn);
+    if(text != ISAJnull)
+    {
+        Table->setColumnCount(text.toInt());
+    }
+    else
+    {
+        Table->setColumnCount(2);
+    }
 }
 
 void TableSet::DataOrRecode(int row, int column, QString text)

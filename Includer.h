@@ -25,5 +25,6 @@
 #include <QLabel>
 #include <QHeaderView>
 
+#include "ISAJDataNames.h"
 
 #endif // INCLUDER_H

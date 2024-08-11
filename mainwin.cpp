@@ -27,6 +27,7 @@ void MainWin::SetUnits()
     camera->SetTable(table);
     table->setBottomBar(ui->statusbar);
     baidu = new BaiduOCR();
+    preset = new PreSet();
     baidu->GetParent(this);
     camera->SetOcr(baidu->GetOcr());
 }
@@ -35,6 +36,11 @@ void MainWin::SetWidget()
 {
     //ui->cameraWidget->resize(250, 380);
     ui->statusbar->addWidget(new QLabel("v 0.0.0 Alpha"));
+}
+
+void MainWin::PreSetPage()
+{
+
 }
 
 void MainWin::closeEvent(QCloseEvent *event)
@@ -69,6 +75,7 @@ void MainWin::Connections()
     connect(ui->actionSetting, &QAction::triggered, baidu, &BaiduOCR::OpenWidget);
     connect(ui->actionSetIdKeyWord, &QAction::triggered, camera, &CameraSet::SetKeyWord);
     connect(ui->actionNewTable, &QAction::triggered, table, &TableSet::NewTable);
+    connect(ui->actionpreSet, &QAction::triggered, preset, &PreSet::LoadData);
 
 
     connect(ui->actionAsID, &QAction::triggered, camera, &CameraSet::isUseId);

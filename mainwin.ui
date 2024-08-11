@@ -257,6 +257,7 @@ selection-color: rgb(0, 0, 0);</string>
      <addaction name="actionColumn"/>
     </widget>
     <addaction name="menu"/>
+    <addaction name="actionpreSet"/>
    </widget>
    <widget class="QMenu" name="OCR">
     <property name="title">
@@ -377,6 +378,11 @@ selection-color: rgb(0, 0, 0);</string>
   <action name="actionNewTable">
    <property name="text">
     <string>新建</string>
+   </property>
+  </action>
+  <action name="actionpreSet">
+   <property name="text">
+    <string>预设置</string>
    </property>
   </action>
  </widget>
