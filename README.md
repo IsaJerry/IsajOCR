@@ -14,4 +14,4 @@ bugs：
 3. 打开与保存csv文件会出现中文乱码；
 4. 没有ms office的用户电脑在进行excel文件操作时会闪退；
 
-v0.0.2 Alpha 下载链接：https://wwjk.lanzoue.com/ickNd2862mfg
+v0.0.2 Alpha 下载链接：https://wwjk.lanzoue.com/ickNd2862mfg 密码:1cgn
