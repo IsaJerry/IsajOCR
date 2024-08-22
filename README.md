@@ -5,7 +5,9 @@ An app with ocr system to recode works;
 百度ocr的手写识别正常；
 摄像机可进行选择，并设置与打开；
 
+可用于统计作业提交情况，导出文件可以是txt文件和xlsx的excel文件。
 
 bugs：
 1. 表格无法冻结某列；
-2. 表格在新建一列空表格之后不可以直接删除，无论是新增记录还新建一列的方式新建的一列都会导致闪退；
+
+v0.0.2 Alpha 下载链接：https://wwjk.lanzoue.com/ickNd2862mfg
