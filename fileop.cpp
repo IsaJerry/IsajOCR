@@ -8,6 +8,7 @@ FileOp::FileOp()
 FileOp::FileOp(QWidget *parent)
 {
     this->parent = parent;
+    ClipBoard = QApplication::clipboard();
 }
 
 QString FileOp::OpenDialog(enum DialogModel model, QString keyWord)
@@ -18,16 +19,16 @@ QString FileOp::OpenDialog(enum DialogModel model, QString keyWord)
     case Open:
         if(parent != nullptr)
         {
-            return QFileDialog::getOpenFileName(parent, "打开文件", "", "*.txt");
+            return QFileDialog::getOpenFileName(parent, "打开文件", "", "*.txt;; *.csv;; *.xlsx");
         }
-        return QFileDialog::getOpenFileName(NULL, "打开文件", "", "*.txt");
+        return QFileDialog::getOpenFileName(NULL, "打开文件", "", "*.txt;; *.csv;; *.xlsx");
         break;
     case Save:
         if(parent != nullptr)
         {
-            return QFileDialog::getSaveFileName(parent, "保存文件", "", "*.txt");
+            return QFileDialog::getSaveFileName(parent, "保存文件", "", "*.txt;; *.csv;; *.xlsx");
         }
-        return QFileDialog::getSaveFileName(NULL, "保存文件", "", "*.txt");
+        return QFileDialog::getSaveFileName(NULL, "保存文件", "", "*.txt;; *.csv;; *.xlsx");
         break;
     case Text:
         if(parent != nullptr)
@@ -86,6 +87,22 @@ QString FileOp::OpenDialog(enum DialogModel model, QString keyWord)
     }
 }
 
+QString FileOp::WhichTypeFile()
+{
+    if(Path.contains(".csv", Qt::CaseSensitive))
+    {
+        return CSVSPRIT;
+    }
+    else if(Path.contains(".xlsx", Qt::CaseSensitive))
+    {
+        return XLSX;
+    }
+    else
+    {
+        return TEXTSPRIT;
+    }
+}
+
 QStringList FileOp::ReadFile()
 {
     QStringList fileData;
@@ -111,7 +128,7 @@ QStringList FileOp::ReadFile()
             QMessageBox::warning(parent, "错误", "文件打开失败");
         }
         File.close();
-        if((new ISAJData())->ReadData("DefaultLoad") == "true")
+        if((new ISAJData())->ReadData(DEFAULT_LOAD) == ISAJ_TRUE)
         {
             SavePath(Path);
         }
@@ -124,18 +141,72 @@ QStringList FileOp::ReadFile()
     return fileData;
 }
 
+void FileOp::ReadFormExcel(QTableWidget *table)
+{
+    if(!ishasPath)
+    {
+        Path = OpenDialog(DialogModel::Open);
+    }
+    QAxObject *Excel = new QAxObject(parent);
+    Excel->setControl("Excel.Application");
+    Excel->dynamicCall("SetVisible (bool Visible)","false");
+    Excel->setProperty("DisplayAlerts", false);
+    QAxObject *works = Excel->querySubObject("WorkBooks");
+    works->dynamicCall("Open (const QString&)", Path);
+    QAxObject *workbook = Excel->querySubObject("ActiveWorkBook");
+    QAxObject *sheet = workbook->querySubObject("Sheets(int)", 1);
+    //QAxObject *sheet = sheets->querySubObject("Item(int)",1);
+    QAxObject *Range;
+    QString str;
+    table->setRowCount(0);
+    table->setColumnCount(0);
+    for(int i=1;; i++)
+    {
+        table->setRowCount(table->rowCount()+1);
+        for(int j=1;; j++)
+        {
+            Range = sheet->querySubObject("Cells(int,int)",i,j);
+            if(Range != NULL)
+            {
+                table->setColumnCount(table->columnCount()+1);
+                str = Range->dynamicCall("Value2()").toString();
+                table->setItem(i-1, j-1, new QTableWidgetItem(str));
+            }
+            else
+            {
+                break;
+            }
+        }
+        if(sheet->querySubObject("Cells(int,int)",i+1,1) == NULL)
+        {
+            break;
+        }
+
+    }
+    workbook->dynamicCall("Close()");
+    Excel->dynamicCall("Quit()");
+    delete Excel;
+    Excel = NULL;
+}
+
 void FileOp::setBottomBar(QStatusBar *bar)
 {
     this->bar = bar;
 }
 
-void FileOp::WriteTable(QTableWidget *table)
+void FileOp::WriteTable(QTableWidget *table, bool isSaveTo)
 {
-    Path = OpenDialog(DialogModel::Save);
+    QString sprit;
+    if(isSaveTo)
+    {
+        Path = OpenDialog(DialogModel::Save);
+    }
+    sprit = WhichTypeFile();
     if(Path != "")
     {
         QFile File(Path);
         QTextStream in(&File);
+        //in.setEncoding(QStringConverter::Utf8);
         int row = table->rowCount();
         int column = table->columnCount();
         File.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -147,7 +218,7 @@ void FileOp::WriteTable(QTableWidget *table)
                 {
                     if(j<column-1)
                     {
-                        in<<table->item(i,j)->text()<<"\t";
+                        in<<table->item(i,j)->text()<<sprit;
                     }
                     else
                     {
@@ -158,7 +229,7 @@ void FileOp::WriteTable(QTableWidget *table)
                 {
                     if(j<column-1)
                     {
-                        in<<""<<"\t";
+                        in<<""<<sprit;
                     }
                     else
                     {
@@ -170,17 +241,50 @@ void FileOp::WriteTable(QTableWidget *table)
         }
         File.close();
     }
-    if((new ISAJData())->ReadData("DefaultLoad") == "true")
+    if((new ISAJData())->ReadData(DEFAULT_LOAD) == ISAJ_TRUE)
     {
         SavePath(Path);
     }
     //bar->addWidget(new QLabel("文件已打开" + Path));
 }
 
+void FileOp::WriteToExcel(QTableWidget *table, bool isSaveTo)
+{
+    if(isSaveTo)
+    {
+        Path = OpenDialog(DialogModel::Save);
+    }
+    if(Path != "")
+    {
+        QAxObject *Excel = new QAxObject(parent);
+        Excel->setControl("Excel.Application");
+        Excel->dynamicCall("SetVisible (bool Visible)","false");
+        Excel->setProperty("DisplayAlerts", false);
+        QAxObject *works = Excel->querySubObject("WorkBooks");
+        works->dynamicCall("Add");
+        QAxObject *workbook = Excel->querySubObject("ActiveWorkBook");
+        QAxObject *sheets = workbook->querySubObject("Sheets");
+        QAxObject *sheet = sheets->querySubObject("Item(int)",1);
+        for(int i=1; i<table->rowCount()+1; i++)
+        {
+            for(int j=1; j<table->columnCount()+1; j++)
+            {
+                QAxObject *Range = sheet->querySubObject("Cells(int,int)", i, j);
+                Range->dynamicCall("SetValue(const QString &)", table->item(i-1, j-1)->text());
+            }
+        }
+        workbook->dynamicCall("SaveAs(const QString&)",QDir::toNativeSeparators(Path));
+        workbook->dynamicCall("Close()");
+        Excel->dynamicCall("Quit()");
+        delete Excel;
+        Excel = NULL;
+    }
+}
+
 void FileOp::SavePath(QString path)
 {
     ISAJData *data = new ISAJData();
-    data->SaveData("filePath", path);
+    data->SaveData(FILE_PATH, path);
     //bar->addWidget(new QLabel("文件已保存"));
 }
 
@@ -210,4 +314,21 @@ QString FileOp::Image2Base64(QImage image)
     buffer.open(QIODevice::WriteOnly);
     image.save(&buffer, "PNG");
     return data.toBase64();
+}
+
+void FileOp::Copy(QString text)
+{
+    ClipBoard->setText(text);
+}
+
+QString FileOp::Paste()
+{
+    if(ClipBoard != NULL)
+    {
+        return ClipBoard->text();
+    }
+    else
+    {
+        return ISAJ_NULL;
+    }
 }

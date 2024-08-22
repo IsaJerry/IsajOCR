@@ -63,11 +63,11 @@ void CameraSet::SetDisplay()
     WordsList.at(1)->setText("");
     for (int i = 0; i < WordList.length(); i++)
     {
-        if((new ISAJData())->ReadData("UseId") == "true")
+        if((new ISAJData())->ReadData(USE_ID) == ISAJ_TRUE)
         {
             SearchUse(UseId, WordList.at(i));
         }
-        else if((new ISAJData())->ReadData("UseName") == "true")
+        else if((new ISAJData())->ReadData(USE_NAME) == ISAJ_TRUE)
         {
             SearchUse(UseName, WordList.at(i));
         }
@@ -119,7 +119,7 @@ bool CameraSet::isPairing(QString text, SearchType type)
             return false;
             break;
         case UseName:
-            if(text.contains(IdKeyWord, Qt::CaseSensitive))
+            if(table->RetnSearchTipList().contains(text))
             {
                 return true;
             }
@@ -127,7 +127,7 @@ bool CameraSet::isPairing(QString text, SearchType type)
             break;
         default:
             break;
-    }
+        }
 }
 
 void CameraSet::Screenshot()
@@ -144,19 +144,19 @@ void CameraSet::SetOcr(OCRSystem *system)
 void CameraSet::SetSearchBtn()
 {
     ISAJData *data = new ISAJData();
-    if(data->ReadData("UseId") == "null")
+    if(data->ReadData(USE_ID) == ISAJ_NULL)
     {
         SearchUseList.at(0)->setChecked(true);
         SearchUseList.at(1)->setChecked(false);
         return;
     }
-    if(data->ReadData("UseId") == "true")
+    if(data->ReadData(USE_ID) == ISAJ_TRUE)
     {
         SearchUseList.at(0)->setChecked(true);
         SearchUseList.at(1)->setChecked(false);
         return;
     }
-    if(data->ReadData("UseName") == "true")
+    if(data->ReadData(USE_NAME) == ISAJ_TRUE)
     {
         SearchUseList.at(0)->setChecked(false);
         SearchUseList.at(1)->setChecked(true);
@@ -174,11 +174,11 @@ void CameraSet::isUseId(bool checked)
             SearchUseList.at(1)->setChecked(false);
             isUseName(false);
         }
-        data->SaveData("UseId", "true");
+        data->SaveData(USE_ID, ISAJ_TRUE);
     }
     else
     {
-        data->SaveData("UseId", "false");
+        data->SaveData(USE_ID, ISAJ_FALSE);
     }
 }
 
@@ -192,11 +192,11 @@ void CameraSet::isUseName(bool checked)
             SearchUseList.at(0)->setChecked(false);
             isUseId(false);
         }
-        data->SaveData("UseName", "true");
+        data->SaveData(USE_NAME, ISAJ_TRUE);
     }
     else
     {
-        data->SaveData("UseName", "false");
+        data->SaveData(USE_NAME, ISAJ_FALSE);
     }
 }
 
@@ -220,12 +220,12 @@ void CameraSet::SetKeyWord()
         }
     }
     IdKeyWord = keyword;
-    (new ISAJData())->SaveData("IdKeyWord", IdKeyWord);
+    (new ISAJData())->SaveData(ID_KEY_WORD, IdKeyWord);
 }
 
 void CameraSet::GetKeyWord()
 {
-    IdKeyWord = (new ISAJData())->ReadData("IdKeyWord");
+    IdKeyWord = (new ISAJData())->ReadData(ID_KEY_WORD);
 }
 
 void CameraSet::SetCamera()

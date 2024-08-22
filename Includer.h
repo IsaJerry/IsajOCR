@@ -4,6 +4,7 @@
 #include "qmainwindow.h"
 #include <QTableWidget>
 #include <QFile>
+#include <QTextStream>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QTableWidgetItem>
@@ -24,6 +25,8 @@
 #include <QStatusBar>
 #include <QLabel>
 #include <QHeaderView>
+#include <QClipboard>
+#include <QApplication>
 
 #include "ISAJDataNames.h"
 

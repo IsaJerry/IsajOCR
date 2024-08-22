@@ -23,6 +23,7 @@ public:
     void NewTable();
     void DataOrRecode(int row, int column, QString text);
     void SaveTable();
+    void SaveTo();
     QStringList GetTableLineData(QString linedata);
     bool RetnisNew();
 
@@ -33,7 +34,7 @@ public:
     bool RetnOcrColumn();
     void AltItem(int row, int column);
     void SetOcrTarget(int column);
-    void SetFixed(int row, int column);
+    void SetFixed(int column);
     void DeleteItem(int row, int column);
     void DeleteLine(int row);
     void DeleteColumn(int row, int column);
@@ -48,10 +49,14 @@ public:
     void SetSearch();
     void Refeash();
     void SearchDisplay();
+    QStringList RetnSearchTipList();
     QTableWidgetItem * RetnSearch();
     void OcrSearch(QString search);
 
     void SetDefault(bool checked);
+
+    void CopyTable(int row, int column);
+    void PasteTable(int row, int column);
 
     void Connections();
 

@@ -1,6 +1,7 @@
 QT       += core gui
 QT       += multimediawidgets
 QT       += multimedia
+QT       += axcontainer
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -49,12 +50,10 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+win32: LIBS += -L$$PWD/../../../curl-8.9.1/builds/libcurl-vc17-x64-release-dll-ipv6-sspi-schannel/lib/ -llibcurl
 
+INCLUDEPATH += $$PWD/../../../curl-8.9.1/builds/libcurl-vc17-x64-release-dll-ipv6-sspi-schannel/include
+DEPENDPATH += $$PWD/../../../curl-8.9.1/builds/libcurl-vc17-x64-release-dll-ipv6-sspi-schannel/include
 
-win32: LIBS += -L$$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/lib/ -llibcurl_debug
-
-INCLUDEPATH += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/include
-DEPENDPATH += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/include
-
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/lib/libcurl_debug.lib
-else:win32-g++: PRE_TARGETDEPS += $$PWD/../../../curl-7.68.0/curl-7.68.0/builds/libcurl-vc17-x64-debug-dll-ipv6-sspi-winssl/lib/liblibcurl_debug.a
+RESOURCES += \
+    IMGS.qrc

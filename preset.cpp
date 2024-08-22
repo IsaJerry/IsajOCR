@@ -25,7 +25,7 @@ void PreSet::LoadData()
 void PreSet::preTableLoad(QString text)
 {
     text = data->ReadData(LoadRow);
-    if(text != ISAJnull)
+    if(text != ISAJ_NULL)
     {
         Row = text.toInt();
         ui->rowLine->setText(text);
@@ -36,7 +36,7 @@ void PreSet::preTableLoad(QString text)
         ui->rowLine->setText("72");
     }
     text = data->ReadData(LoadColumn);
-    if(text != ISAJnull)
+    if(text != ISAJ_NULL)
     {
         Column = text.toInt();
         ui->columnLine->setText(text);

@@ -24,10 +24,10 @@ void TableSet::setBottomBar(QStatusBar *bar)
 
 void TableSet::DefaultLoad()
 {
-    if((new ISAJData())->ReadData("DefaultLoad") == "true")
+    if((new ISAJData())->ReadData(DEFAULT_LOAD) == ISAJ_TRUE)
     {
         DefaultOp->setChecked(true);
-        file->ReadFromPath((new ISAJData())->ReadData("filePath"));
+        file->ReadFromPath((new ISAJData())->ReadData(FILE_PATH));
         if(file->isPath())
         {
             SetTable();
@@ -41,24 +41,31 @@ void TableSet::DefaultLoad()
 
 void TableSet::SetTable()
 {
-    QStringList list = file->ReadFile();
-    if(list.at(0) != "ERROR")
-    {
-        Table->setRowCount(list.length());
-        Table->setColumnCount(GetTableLineData(list.at(0)).length());
-        for(int i=0; i<list.length(); i++)
+    //if(file->WhichTypeFile() == XLSX)
+    //{
+    //    file->ReadFormExcel(Table);
+    //}
+    //else
+    //{
+        QStringList list = file->ReadFile();
+        if(list.at(0) != "ERROR")
         {
-            QStringList datalist = GetTableLineData(list.at(i));
-            SearchTipList << datalist;
-            for(int j=0; j<datalist.length(); j++)
+            Table->setRowCount(list.length());
+            Table->setColumnCount(GetTableLineData(list.at(0)).length());
+            for(int i=0; i<list.length(); i++)
             {
-                DataOrRecode(i, j, datalist.at(j));
+                QStringList datalist = GetTableLineData(list.at(i));
+                SearchTipList << datalist;
+                for(int j=0; j<datalist.length(); j++)
+                {
+                    DataOrRecode(i, j, datalist.at(j));
+                }
             }
+            SetSearch();
+            Save->setEnabled(true);
         }
-        SetSearch();
-        Save->setEnabled(true);
-        Header = Table->horizontalHeader();
-    }
+    //}
+
 }
 
 void TableSet::NewTable()
@@ -66,7 +73,7 @@ void TableSet::NewTable()
     Table->clear();
     ISAJData *data = new ISAJData();
     QString text = data->ReadData(LoadRow);
-    if(text != ISAJnull)
+    if(text != ISAJ_NULL)
     {
         Table->setRowCount(text.toInt());
     }
@@ -75,7 +82,7 @@ void TableSet::NewTable()
         Table->setRowCount(72);
     }
     text = data->ReadData(LoadColumn);
-    if(text != ISAJnull)
+    if(text != ISAJ_NULL)
     {
         Table->setColumnCount(text.toInt());
     }
@@ -105,15 +112,35 @@ void TableSet::SetDefault(bool checked)
 {
     if(checked)
     {
-        (new ISAJData())->SaveData("DefaultLoad", "true");
+        (new ISAJData())->SaveData(DEFAULT_LOAD, ISAJ_TRUE);
         file->SavePath(file->RetnPath());
         isNew = false;
     }
     else
     {
-        (new ISAJData())->SaveData("DefaultLoad", "false");
+        (new ISAJData())->SaveData(DEFAULT_LOAD, ISAJ_FALSE);
     }
 
+}
+
+void TableSet::CopyTable(int row, int column)
+{
+    QTableWidgetItem *item = Table->item(row, column);
+    if(item != NULL)
+    {
+        file->Copy(item->text());
+    }
+}
+
+void TableSet::PasteTable(int row, int column)
+{
+    QString text = file->Paste();
+    if(text == ISAJ_NULL)
+    {
+        return;
+    }
+    Table->setItem(row, column, new QTableWidgetItem(text));
+    isNew = true;
 }
 
 void TableSet::SaveTable()
@@ -122,10 +149,17 @@ void TableSet::SaveTable()
     isNew = false;
 }
 
+void TableSet::SaveTo()
+{
+    //file->WriteTable(Table, true);
+    file->WriteToExcel(Table, true);
+    isNew = false;
+}
+
 QStringList TableSet::GetTableLineData(QString linedata)
 {
     QStringList tabletata;
-    return tabletata = linedata.split("\t");
+    return tabletata = linedata.split(file->WhichTypeFile());
 }
 
 bool TableSet::RetnisNew()
@@ -208,11 +242,12 @@ void TableSet::SetOcrTarget(int column)
     couldAdd = true;
 }
 
-void TableSet::SetFixed(int row, int column)
+void TableSet::SetFixed(int column)
 {
+    Header = Table->horizontalHeader();
     //int width = Table->columnWidth(column);
     Header->setSectionResizeMode(column, QHeaderView::Fixed);
-    //Header->resizeSection(column, width);
+    Header->resizeSection(column, 100);
 }
 
 void TableSet::DeleteItem(int row, int column)
@@ -326,6 +361,11 @@ void TableSet::SearchDisplay()
     }
 }
 
+QStringList TableSet::RetnSearchTipList()
+{
+    return SearchTipList;
+}
+
 QTableWidgetItem *TableSet::RetnSearch()
 {
     return searchlist.at(0);
@@ -346,6 +386,8 @@ void TableSet::Connections()
 void TableSet::ActionMenu(int row, int column)
 {
     QMenu menu;
+    QAction *copy = menu.addAction("复制");
+    QAction *paste = menu.addAction("粘贴");
     QAction *Altitem = menu.addAction("修改");
     QAction *setocr = menu.addAction("设为Orc目标");
     QAction *setForizon = menu.addAction("冻结该列");
@@ -357,9 +399,11 @@ void TableSet::ActionMenu(int row, int column)
     QAction *delt = menu.addAction("删除");
     QAction *delLine = menu.addAction("删除该行");
     QAction *delCol = menu.addAction("删除该列");
+    connect(copy, &QAction::triggered, Table, [=](){CopyTable(row, column);});
+    connect(paste, &QAction::triggered, Table, [=](){PasteTable(row, column);});
     connect(Altitem, &QAction::triggered, Table, [=](){AltItem(row, column);});
     connect(setocr, &QAction::triggered, Table, [=](){SetOcrTarget(column);});
-    connect(setForizon, &QAction::triggered, Table, [=](){SetFixed(row, column);});
+    connect(setForizon, &QAction::triggered, Table, [=](){SetFixed(column);});
     connect(addRowAt, &QAction::triggered, Table, [=](){AddRow(row);});
     connect(addColumnAt, &QAction::triggered, Table, [=](){AddColumn(column);});
     connect(isHandle, &QAction::triggered, Table, [=](){setHandled(row, column, isHandled);});

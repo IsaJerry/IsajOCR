@@ -2,7 +2,7 @@
 
 OCRSystem::OCRSystem()
 {
-    AccessToken = (new ISAJData())->ReadData("Accesstoken");
+    AccessToken = (new ISAJData())->ReadData(ACCESS_TOKEN);
 }
 
 QString OCRSystem::getAccessToken(QString apiKey, QString secretKey)
@@ -27,15 +27,15 @@ QString OCRSystem::getAccessToken(QString apiKey, QString secretKey)
             return b;
         }
         curl_easy_cleanup(curl);
-        AccessToken = (new ISAJData())->ReadData("Accesstoken");
+        AccessToken = (new ISAJData())->ReadData(ACCESS_TOKEN);
         if(AccessToken == "")
         {
             return "Get AccessToken ERROR";
         }
         SetAccessTokenTime();
         ISAJData *save = new ISAJData();
-        save->SaveData("API Key", apiKey);
-        save->SaveData("Secret Key", secretKey);
+        save->SaveData(API_KEY, apiKey);
+        save->SaveData(SECRET_KEY, secretKey);
         return "success";
     }
     else
@@ -79,13 +79,13 @@ QString OCRSystem::HandWriting(QString imageData)
 void OCRSystem::SetAccessTokenTime()
 {
     QDateTime time = QDateTime::currentDateTime();
-    (new ISAJData())->SaveData("GetTokenTime", time.toString("yyyy-MM-dd hh:mm:ss"));
+    (new ISAJData())->SaveData(GET_TOKEN_TIME, time.toString("yyyy-MM-dd hh:mm:ss"));
 }
 
 int OCRSystem::GetLastTime()
 {
-    QString time = (new ISAJData())->ReadData("GetTokenTime");
-    if(time == "null")
+    QString time = (new ISAJData())->ReadData(GET_TOKEN_TIME);
+    if(time == ISAJ_NULL)
     {
         return 0;
     }
@@ -96,7 +96,7 @@ int OCRSystem::GetLastTime()
 
 void OCRSystem::GetResult()
 {
-    QString res = (new ISAJData())->ReadData("TempData");
+    QString res = (new ISAJData())->ReadData(DATA_CACHE);
     Json::Reader reader;
     Json::Value root;
     reader.parse(res.toStdString(),root);
@@ -118,12 +118,12 @@ QStringList OCRSystem::GetWordsList()
 void OCRSystem::SetLastCount(enum OCRModel model)
 {
     ISAJData *last = new ISAJData();
-    QString count = last->ReadData("LastCount");
-    if(count == "null")
+    QString count = last->ReadData(LAST_COUNT);
+    if(count == ISAJ_NULL)
     {
-        last->SaveData("LastCount", QString::number(model - 1));
+        last->SaveData(LAST_COUNT, QString::number(model - 1));
     }
-    last->SaveData("LastCount", QString::number(count.toInt() - 1));
+    last->SaveData(LAST_COUNT, QString::number(count.toInt() - 1));
 }
 
 size_t OCRSystem::SaveAccessToken(void *ptr, size_t size, size_t nmemb, void *stream)
@@ -133,13 +133,13 @@ size_t OCRSystem::SaveAccessToken(void *ptr, size_t size, size_t nmemb, void *st
     Json::Value root;
     reader.parse(s,root);
     std::string rest = root["access_token"].asString();
-    (new ISAJData())->SaveData("Accesstoken", QString::fromStdString(rest));
+    (new ISAJData())->SaveData(ACCESS_TOKEN, QString::fromStdString(rest));
     return nmemb;
 }
 
 size_t OCRSystem::getHandWrite(void *ptr, size_t size, size_t nmemb, void *stream)
 {
-    (new ISAJData())->SaveData("TempData", QString::fromStdString(std::string((char *) ptr, size * nmemb)));
+    (new ISAJData())->SaveData(DATA_CACHE, QString::fromStdString(std::string((char *) ptr, size * nmemb)));
     return size * nmemb;
 }
 

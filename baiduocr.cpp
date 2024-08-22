@@ -27,6 +27,10 @@ void BaiduOCR::SetWidget()
 
 void BaiduOCR::SetSetting()
 {
+    if(ui->TokenLine->text() != "")
+    {
+        ui->TokenLine->clear();
+    }
     QString reasult = system->getAccessToken(ui->apiKeyLine->text(), ui->SecretKeyLine->text());
     if(reasult != "success")
     {
@@ -34,29 +38,26 @@ void BaiduOCR::SetSetting()
         return;
     }
     QMessageBox::information(this, "消息", "获取成功");
+    this->close();
 }
 
 void BaiduOCR::OpenWidget()
 {
     ISAJData *data = new ISAJData();
-    QString key =  data->ReadData("API Key");
-    if(key != "null")
+    QString key =  data->ReadData(API_KEY);
+    if(key != ISAJ_NULL)
     {
         ui->apiKeyLine->setText(key);
-        ui->SecretKeyLine->setText(data->ReadData("Secret Key"));
+        ui->SecretKeyLine->setText(data->ReadData(SECRET_KEY));
     }
-    key = data->ReadData("Accesstoken");
-    if(key != "null")
+    key = data->ReadData(ACCESS_TOKEN);
+    if(key != ISAJ_NULL)
     {
         ui->TokenLine->setText(key);
     }
     QString day = QString::number(system->GetLastTime());
     ui->label->setText(day + "天");
-    key = data->ReadData("LastCount");
-    if(key != "null")
-    {
-        ui->label_2->setText(key + "次");
-    }
+    key = data->ReadData(LAST_COUNT);
     this->setVisible(true);
 }
 

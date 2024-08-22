@@ -46,6 +46,6 @@ QString ISAJData::ReadData(QString id)
     }
     else
     {
-        return "null";
+        return ISAJ_NULL;
     }
 }

@@ -34,7 +34,8 @@ void MainWin::SetUnits()
 
 void MainWin::SetWidget()
 {
-    //ui->cameraWidget->resize(250, 380);
+    ui->dispWidget->setStyleSheet(QString::fromUtf8("#dispWidget{border:1px dashed black; border-radius: 5px}"));
+    ui->cameraWidget->setStyleSheet(QString::fromUtf8("#cameraWidget{border:1px dashed black; border-radius: 5px}"));
     ui->statusbar->addWidget(new QLabel("v 0.0.0 Alpha"));
 }
 
@@ -69,6 +70,7 @@ void MainWin::Connections()
 {
     connect(ui->actionOpen, &QAction::triggered, table, &TableSet::SetTable);
     connect(ui->actionSave, &QAction::triggered, table, &TableSet::SaveTable);
+    connect(ui->actionSaveTo, &QAction::triggered, table, &TableSet::SaveTo);
     connect(ui->actionRecode, &QAction::triggered, table, [=](){table->AddRecode();});
     connect(ui->actionRow, &QAction::triggered, table, [=](){table->AddRow();});
     connect(ui->actionColumn, &QAction::triggered, table, [=](){table->AddColumn();});
