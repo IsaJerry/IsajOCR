@@ -36,7 +36,8 @@ void MainWin::SetWidget()
 {
     ui->dispWidget->setStyleSheet(QString::fromUtf8("#dispWidget{border:1px dashed black; border-radius: 5px}"));
     ui->cameraWidget->setStyleSheet(QString::fromUtf8("#cameraWidget{border:1px dashed black; border-radius: 5px}"));
-    ui->statusbar->addWidget(new QLabel("v 0.0.0 Alpha"));
+    ui->statusbar->addWidget(new QLabel("v 0.0.2 Alpha"));
+    ui->statusbar->addWidget(new QLabel("截图" + QString::number(camera->RetnImgNO()) + "次"));
 }
 
 void MainWin::PreSetPage()

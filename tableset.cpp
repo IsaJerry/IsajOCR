@@ -151,8 +151,19 @@ void TableSet::SaveTable()
 
 void TableSet::SaveTo()
 {
-    //file->WriteTable(Table, true);
-    file->WriteToExcel(Table, true);
+    QString path = file->OpenDialog(file->Save);
+    file->setPath(path);
+    if(file->WhichTypeFile() == TEXTSPRIT)
+    {
+        file->WriteTable(Table, true);
+    }
+    else if(file->WhichTypeFile() == XLSX)
+    {
+        file->WriteToExcel(Table, true);
+    }
+    else
+    {
+    }
     isNew = false;
 }
 
@@ -279,7 +290,7 @@ void TableSet::DeleteColumn(int row, int column)
     int ro = Table->rowCount();
     for(int i=0; i<ro; i++)
     {
-        if(Table->item(row, i) != NULL)
+        if(Table->item(i, column) != NULL)
         {
             removeData(Table->item(i, column)->text());
         }

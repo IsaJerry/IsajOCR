@@ -199,7 +199,7 @@ void FileOp::WriteTable(QTableWidget *table, bool isSaveTo)
     QString sprit;
     if(isSaveTo)
     {
-        Path = OpenDialog(DialogModel::Save);
+
     }
     sprit = WhichTypeFile();
     if(Path != "")
@@ -252,7 +252,7 @@ void FileOp::WriteToExcel(QTableWidget *table, bool isSaveTo)
 {
     if(isSaveTo)
     {
-        Path = OpenDialog(DialogModel::Save);
+
     }
     if(Path != "")
     {
@@ -331,4 +331,9 @@ QString FileOp::Paste()
     {
         return ISAJ_NULL;
     }
+}
+
+void FileOp::setPath(QString path)
+{
+    Path = path;
 }

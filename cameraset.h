@@ -40,6 +40,8 @@ public:
     void SetDisplay();
     void SearchUse(enum SearchType type, QString text);
     bool isPairing(QString text, enum SearchType type);
+
+    int RetnImgNO();
     
 private:
     QWidget *parent;
@@ -57,6 +59,8 @@ private:
     QString IdKeyWord;
     QList<QLineEdit *> WordsList;
     QList<QAction *> SearchUseList;
+
+    int ID = 0;
 
     QStringList GetVideoDeviceList();
     void CameraSelect();

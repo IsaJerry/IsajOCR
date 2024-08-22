@@ -19,6 +19,7 @@ SOURCES += \
     jsoncpp.cpp \
     main.cpp \
     mainwin.cpp \
+    ocrdisplay.cpp \
     ocrsystem.cpp \
     preset.cpp \
     tableset.cpp
@@ -34,6 +35,7 @@ HEADERS += \
     json/json-forwards.h \
     json/json.h \
     mainwin.h \
+    ocrdisplay.h \
     ocrsystem.h \
     preset.h \
     tableset.h
@@ -41,6 +43,7 @@ HEADERS += \
 FORMS += \
     baiduocr.ui \
     mainwin.ui \
+    ocrdisplay.ui \
     preset.ui
 
 RC_ICONS = Sources\icon.ico

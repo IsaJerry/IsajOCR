@@ -47,6 +47,7 @@ void CameraSet::GetOCRresult(int id, const QImage &preview)
         disconnect(imgCapture, &QImageCapture::imageCaptured, this, &CameraSet::GetOCRresult);
         return;
     }
+    ID = id;
     ImageData = file->Image2Base64(preview);
     QString data = system->HandWriting(ImageData);
     if(data != "success")
@@ -112,6 +113,11 @@ bool CameraSet::isPairing(QString text, SearchType type)
     switch (type)
     {
         case UseId:
+            if(IdKeyWord == "not set" || IdKeyWord == "")
+            {
+                QMessageBox::warning(parent, "ERROR", "未设置学号关键字");
+                return false;
+            }
             if(text.contains(IdKeyWord, Qt::CaseSensitive))
             {
                 return true;
@@ -126,8 +132,14 @@ bool CameraSet::isPairing(QString text, SearchType type)
             return false;
             break;
         default:
+            return false;
             break;
         }
+}
+
+int CameraSet::RetnImgNO()
+{
+    return ID;
 }
 
 void CameraSet::Screenshot()

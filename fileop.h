@@ -27,6 +27,7 @@ public:
     QString Image2Base64(QImage image);
     void Copy(QString text);
     QString Paste();
+    void setPath(QString path);
 
     enum DialogModel
     {
